@@ -1,6 +1,6 @@
 class GameController{
   private ArrayList<Balloon> balloons = new ArrayList<Balloon>();
-  private ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
+  //private ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
   private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   private Path p = new Path();
   
@@ -17,6 +17,6 @@ class GameController{
   }
   
   public void display(){
-
+    p.display();
   }
 }
