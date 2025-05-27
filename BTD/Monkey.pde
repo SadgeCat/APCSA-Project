@@ -2,11 +2,14 @@ public class Monkey{
   int range, size, price;
   boolean isPlaced;
   PVector pos;
+  int[] level;
   
-  public Monkey(String monkeyType, PVector position){
+  public Monkey(String monkeyType, PVector position, int cost,int siz){
     pos = new PVector(mouseX,mouseY);
     isPlaced = false;
-    price = 
+    price = cost;
+    level = new int[2];
+    size = siz;
   }
   
   public int getRange(){
@@ -41,6 +44,12 @@ public class Monkey{
       return;
     }
     isPlaced = true;
-    
+    pos = new PVector(mouseX,mouseY);
+  }
+  
+  private boolean onTrack(){
+    for (int i = 0;i < path.size();i++){
+      if (path.get(i)
+    }
   }
 }
