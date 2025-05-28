@@ -30,7 +30,6 @@ public class Monkey{
   
   //need to replace the b.x and b.y with bloon pos PVector coords
   public void attack(ArrayList<Balloon> lst){
-    ArrayList<Balloon> = new ArrayList<Balloon>();
     for (Ballon b : lst){
       if (Math.pow(Math.pow(b.x - pos.x,2)+Math.pow(b.y - pos.y,2),0.5) < range){
         
