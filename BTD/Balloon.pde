@@ -35,7 +35,5 @@ class Balloon
   public void updateBalloon()
   {
     // move along the path
-    
-    image = load
   }
 }
