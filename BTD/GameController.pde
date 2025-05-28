@@ -14,6 +14,11 @@ class GameController{
     // balloons.add(b);
   }
   
+  public void placeMonkey(PVector pos, float r, float cd, int d){
+    // Monkey m = new Monkey(pos, r, cd, d);
+    // monkeys.add(m);
+  }
+  
   public void update(){
     // update balloons monkey & projectile
   }
