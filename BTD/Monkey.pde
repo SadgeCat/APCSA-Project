@@ -30,11 +30,13 @@ public class Monkey{
   
   //need to replace the b.x and b.y with bloon pos PVector coords
   public void attack(ArrayList<Balloon> lst){
-    for (Ballon b : lst){
-      if (Math.pow(Math.pow(b.x - pos.x,2)+Math.pow(b.y - pos.y,2),0.5) < range){
-        
+    Balloon close = lst.get(0);
+    for (Balloon b : lst){
+      if (Math.pow(Math.pow(b.getPos().x - pos.x,2)+Math.pow(b.getPos().y - pos.y,2),0.5) < range){
+        // something to find which balloon is closest to end of track
       }
     }
+    Projectile atk = new Projectile(
   }
   
   
@@ -46,9 +48,14 @@ public class Monkey{
     pos = new PVector(mouseX,mouseY);
   }
   
-  private boolean onTrack(){
-    for (int i = 0;i < path.size();i++){
-      if (path.get(i)
+  private boolean onTrack(int trackWidth, ArrayList<PVector> waypoints){
+    for (int i = 0;i < waypoints.size()-1;i++){
+      if (GameController.pointToLine(pos,waypoints.get(i),waypoints.get(i+1)) >= size+trackWidth){
+        return true;
+      }
     }
+    return false;
   }
+  
+  
 }
