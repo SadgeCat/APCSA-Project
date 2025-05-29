@@ -4,12 +4,14 @@ class Balloon
   private float speed;
   private PVector pos;
   private PImage img;
+  private int wayPointIndex;
   
-  public Balloon(int HP)
+  public Balloon(int HP, PVector pos)
   {
     this.HP = HP;
     this.speed = 5;
-    this.pos = new PVector(0, 0);
+    this.pos = pos;
+    this.wayPointIndex = 0;
   }
   
   public int getHP()
@@ -34,6 +36,6 @@ class Balloon
   
   public void updateBalloon()
   {
-    // move along the path
+    
   }
 }
