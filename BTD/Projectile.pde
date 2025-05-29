@@ -25,7 +25,7 @@ class Projectile{
     pos.add(dir);
     
     if(dir.mag() < speed){
-      target.setHP(target.getHP() - damage);
+      //target.setHP(target.getHP() - damage);
     }
   }
   
