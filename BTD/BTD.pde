@@ -1,14 +1,20 @@
-int gameScreen = 0;
+int gameScreen = 2;
 int cash = 500;
 int lives = 100;
 int round = 0;
 PImage startImage;
+PImage[] balloons = new PImage[8];
+String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
 
 GameController game = new GameController();
 
 void setup(){
   size(1280,720);
   startImage = loadImage("Screen/StartScreenBTD.png");
+  for(int i = 0; i < 8; i++){
+    balloons[i] = loadImage("Balloons/" + bOrder[i]);
+  }
+  
   //String[] fontList = PFont.list();
   //printArray(fontList);
 }
@@ -19,6 +25,7 @@ void draw() {
   } else if(gameScreen == 1){
     gameScreen();
   } else if(gameScreen == 2){
+    gameScreen();
     gameOverScreen();
   }
 }
@@ -118,7 +125,15 @@ void gameScreen(){
 }
 
 void gameOverScreen(){
-  
+  fill(0, 120);
+  rect(0, 0, width, height);
+  rectMode(CENTER);
+  fill(135, 171, 255);
+  rect(width/2, height/2, 600, 360, 20);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textFont(createFont("NotoSerifMyanmar-Bold", 45));
+  text("DEFEAT", width/2, height/2 - 100);
 }
 
 boolean overBtn(int x, int y, int width, int height){
@@ -129,16 +144,21 @@ boolean overBtn(int x, int y, int width, int height){
   }
 }
 
-void addCash(){
-
+void addCash(int k){
+  cash += k;
 }
 
-boolean useCash(){
-  return true;
+boolean useCash(int k){
+  if(cash >= k){
+    cash -= k;
+    return true;
+  } else{
+    return false;
+  }
 }
 
 void loseLife(){
-
+  lives--;
 }
 
 boolean isGameOver(){
