@@ -1,10 +1,12 @@
-int gameScreen = 2;
+int gameScreen = 1;
 int cash = 500;
 int lives = 100;
 int round = 0;
 PImage startImage;
 PImage[] balloons = new PImage[8];
 String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
+PImage[] monkeys = new PImage[8];
+String[] mOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
 
 GameController game = new GameController();
 
@@ -13,6 +15,7 @@ void setup(){
   startImage = loadImage("Screen/StartScreenBTD.png");
   for(int i = 0; i < 8; i++){
     balloons[i] = loadImage("Balloons/" + bOrder[i]);
+    monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
   
   //String[] fontList = PFont.list();
@@ -122,9 +125,15 @@ void gameScreen(){
   textAlign(CENTER, TOP);
   textFont(createFont("NotoSerifMyanmar-Bold", 22));
   text("Monkeys", width - 140, 20);
+  
+  drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
+  drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 200);
+  drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 200);
+  drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
 }
 
 void gameOverScreen(){
+  rectMode(CORNER);
   fill(0, 120);
   rect(0, 0, width, height);
   rectMode(CENTER);
@@ -142,6 +151,24 @@ boolean overBtn(int x, int y, int width, int height){
   } else{
     return false;
   }
+}
+
+void drawMonkeyBtn(PImage icon, int x, int y, int width, int height, int cost){
+  if(overBtn(x, y, width, height)){
+    fill(100);
+  } else{
+    fill(200);
+  }
+  rectMode(CENTER);
+  rect(x, y, width, height, 10);
+  
+  imageMode(CENTER);
+  image(icon, x, y - 10, width * 0.8, height * 0.8);
+
+  fill(0);
+  textAlign(CENTER, CENTER);
+  textFont(createFont("NotoSerifMyanmar-Medium", 18));
+  text(cost, x, y + 3 * height/4);
 }
 
 void addCash(int k){
@@ -180,6 +207,21 @@ void mouseClicked(){
       if(r >= 1) cash+=50;
       else cash-=100;
     }
+  } else if(gameScreen == 1){
+    if(overBtn(width - 206, 120, 120, 120)){
+    
+    }
+    if(overBtn(width - 74, 120, 120, 120)){
+    
+    }
+    if(overBtn(width - 206, 252, 120, 120)){
+    
+    }
+    if(overBtn(width - 74, 252, 120, 120)){
+    
+    }
+  } else{
+  
   }
   if(mouseButton == LEFT){
     
