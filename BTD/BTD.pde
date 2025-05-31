@@ -129,18 +129,6 @@ boolean overBtn(int x, int y, int width, int height){
   }
 }
 
-void gameOverScreen(){
-  
-}
-
-boolean overBtn(int x, int y, int width, int height){
-  if(mouseX >= x - width/2 && mouseX <= x + width/2 && mouseY >= y - height/2 && mouseY <= y + height/2){
-    return true;
-  } else{
-    return false;
-  }
-}
-
 void addCash(){
 
 }
