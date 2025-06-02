@@ -33,10 +33,27 @@ class GameController{
   
   public void update(){
     // update balloons monkey & projectile
+    for(Balloon b : balloons){
+      b.update(p);
+    }
+    
+    for(int i = projectiles.size()-1; i >= 0; i--){
+      if(projectiles.get(i).update()){
+        projectiles.remove(i);
+      }
+    }
+    
+    for(int i = balloons.size()-1; i >= 0; i--){
+      if(balloons.get(i).getHP() <= 0 || balloons.get(i).reachedEnd(p)){
+        balloons.remove(i);
+      }
+    }
   }
   
   public void display(){
     p.display();
+    for(Balloon b : balloons) b.display();
+    for(Projectile p : projectiles) p.display();
     // also display all balloons monkeys & projectiles
   }
 }

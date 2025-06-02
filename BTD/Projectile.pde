@@ -11,8 +11,8 @@ class Projectile{
     damage = d;
   }
   
-  public void update(){
-    if(target == null) return;
+  public boolean update(){
+    if(target == null) return false;
     
     float x = target.getPos().x - pos.x;
     if(x > speed) x = speed;
@@ -22,10 +22,13 @@ class Projectile{
     else if(y < -speed) y = -speed;
     
     PVector dir = new PVector(x,y);
-    pos.add(dir);
     
     if(dir.mag() < speed){
-      //target.setHP(target.getHP() - damage);
+      target.setHP(target.getHP() - damage);
+      return true;
+    } else{
+      pos.add(dir);
+      return false;
     }
   }
   

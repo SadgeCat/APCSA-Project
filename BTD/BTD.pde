@@ -1,4 +1,4 @@
-int gameScreen = 1;
+int gameScreen = 0;
 int cash = 500;
 int lives = 100;
 int round = 0;
@@ -7,6 +7,9 @@ PImage[] balloons = new PImage[8];
 String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
 PImage[] monkeys = new PImage[8];
 String[] mOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
+
+Balloon[][] waves = new Balloon[10][];
+
 
 GameController game = new GameController();
 
@@ -126,10 +129,10 @@ void gameScreen(){
   textFont(createFont("NotoSerifMyanmar-Bold", 22));
   text("Monkeys", width - 140, 20);
   
-  drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
-  drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 200);
-  drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 200);
-  drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
+  //drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
+  //drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 200);
+  //drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 200);
+  //drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
 }
 
 void gameOverScreen(){
