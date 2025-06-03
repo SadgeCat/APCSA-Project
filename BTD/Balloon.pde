@@ -3,13 +3,15 @@ class Balloon
   private int HP;
   private float speed;
   private PVector pos;
-  private PImage img;
+  private int wayPointIndex;
+  private PVector[] waypoints;
   
-  public Balloon(int HP)
+  public Balloon(int HP, PVector pos)
   {
     this.HP = HP;
     this.speed = 5;
-    this.pos = new PVector(0, 0);
+    this.pos = pos;
+    this.wayPointIndex = 0;
   }
   
   public int getHP()
@@ -34,6 +36,38 @@ class Balloon
   
   public void updateBalloon()
   {
-    // move along the path
+    if (wayPointIndex >= waypoints.length - 1)
+    {
+      return;
+    }
+    
+    PVector target = waypoints[wayPointIndex + 1];
+    
+    if (target.x == pos.x) 
+    {
+      if (target.y > pos.y) 
+      {
+        pos.y = min(pos.y + speed, target.y);
+      } else 
+      {
+        pos.y = max(pos.y - speed, target.y);
+      }
+    }
+    else if (target.y == pos.y) 
+    {
+      if (target.x > pos.x) 
+      {
+        pos.x = min(pos.x + speed, target.x);
+      } 
+      else 
+      {
+        pos.x = max(pos.x - speed, target.x);
+      }
+    }
+
+    if (pos.equals(target)) 
+    {
+      wayPointIndex++;
+    }
   }
 }
