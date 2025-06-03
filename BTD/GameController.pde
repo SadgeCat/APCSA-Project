@@ -8,10 +8,16 @@ class GameController{
     
   }
   
-  // need to (hard code?) array for waves of balloons
-  public void spawnBalloon(){
-    // Balloon b = new Balloon(hp, speed, spawnpos);
-    // balloons.add(b);
+  public ArrayList<PVector> getPath(){
+    return p.getWayPts();
+  }
+  
+  public void spawnBalloon(Balloon b){
+    balloons.add(b);
+  }
+  
+  public boolean balloonDead(){
+    return balloons.isEmpty();
   }
   
   public float pointToLine(PVector p, PVector a, PVector b){
@@ -34,12 +40,16 @@ class GameController{
   public void update(){
     // update balloons monkey & projectile
     for(Balloon b : balloons){
-      b.update(p);
+      if(frameCount % b.getSpeed() == 0){
+        b.update(p);
+      }
     }
     
     for(int i = projectiles.size()-1; i >= 0; i--){
-      if(projectiles.get(i).update()){
-        projectiles.remove(i);
+      if(frameCount % projectiles.get(i).getSpeed() == 0){
+        if(projectiles.get(i).update()){
+          projectiles.remove(i);
+        }
       }
     }
     

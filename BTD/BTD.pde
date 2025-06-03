@@ -8,10 +8,14 @@ String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png",
 PImage[] monkeys = new PImage[8];
 String[] mOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
 
-Balloon[][] waves = new Balloon[10][];
-
-
 GameController game = new GameController();
+
+int spawnIdx = 0, spawnInterval = 30;
+boolean waveInProgress = false;
+boolean win = false;
+
+PVector start = game.getPath().get(0);
+ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
 
 void setup(){
   size(1280,720);
@@ -20,6 +24,12 @@ void setup(){
     balloons[i] = loadImage("Balloons/" + bOrder[i]);
     monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
+  
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{1}, new int[]{10}, new int[]{0}, start)); // 10 red
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 2}, new int[]{10, 8}, new int[]{10, 10}, new int[]{0, 1}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{10}, new int[]{2}, new int[]{8}, new int[]{10}, new int[]{1}, start)); // 10 blue
+  waves.add(createWave(new int[]{10}, new int[]{3}, new int[]{7}, new int[]{10}, new int[]{2}, start)); // 10 green
+  waves.add(createWave(new int[]{15}, new int[]{4}, new int[]{6}, new int[]{10}, new int[]{3}, start)); // 15 yellow
   
   //String[] fontList = PFont.list();
   //printArray(fontList);
@@ -30,10 +40,46 @@ void draw() {
     initScreen();
   } else if(gameScreen == 1){
     gameScreen();
+    
+    if(!waveInProgress && round < waves.size()){
+      waveInProgress = true;
+      spawnIdx = 0;
+    }
+    
+    if(waveInProgress && frameCount % spawnInterval == 0 && spawnIdx < waves.get(round).size()){
+      game.spawnBalloon(waves.get(round).get(spawnIdx));
+      spawnIdx++;
+    }
+    
+    if(spawnIdx >= waves.get(round).size() && game.balloonDead()){
+      round++;
+      waveInProgress = false;
+    }
+    
+    if(lives <= 0){
+      gameScreen = 2;
+      win = false;
+    }
+    if(round >= waves.size()){
+      gameScreen = 2;
+      win = true;
+    }
+    
   } else if(gameScreen == 2){
     gameScreen();
     gameOverScreen();
   }
+}
+
+ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[] type, PVector start){
+  ArrayList<Balloon> wave = new ArrayList<Balloon>();
+  for (int i = 0; i < cnt.length; i++) {
+    for (int j = 0; j < cnt[i]; j++) {
+      Balloon b = new Balloon(hp[i], speed[i], start.copy(), size[i], balloons[type[i]]);
+      wave.add(b);
+    }
+  }
+  return wave;
 }
 
 void initScreen(){
@@ -119,7 +165,7 @@ void gameScreen(){
   fill(230, 39, 39);
   text("Lives: " + lives, 220, 20);
   fill(255);
-  text("Round: " + round, 420, 20);
+  text("Round: " + round+1, 420, 20);
   
   // sidebar for monkeys
   fill(40);

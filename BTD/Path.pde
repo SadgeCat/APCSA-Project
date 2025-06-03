@@ -15,12 +15,16 @@ class Path{
     waypoints.add(new PVector(1000,400));
   }
   
+  public ArrayList<PVector> getWayPts(){
+    return waypoints;
+  }
+  
   public void display(){
     stroke(150);
     strokeWeight(40);
     noFill();
     beginShape();
-    for (PVector p : waypoints) {
+    for(PVector p : waypoints){
       vertex(p.x, p.y);
     }
     endShape();
