@@ -30,11 +30,22 @@ public class Monkey{
   
   //need to replace the b.x and b.y with bloon pos PVector coords
   public void attack(ArrayList<Balloon> lst){
-    for (Ballon b : lst){
+    Balloon close = null
+    for (Balloon b : lst){
       if (Math.pow(Math.pow(b.x - pos.x,2)+Math.pow(b.y - pos.y,2),0.5) < range){
-        
+        if (close == null){
+          close = b;
+        } else {
+          if (close.getDist() < b.getDist()){
+            close = b;
+          } 
+        }
       }
     }
+    if (close == null){
+      return;
+    }
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),close,10,1);
   }
   
   

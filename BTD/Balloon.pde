@@ -23,6 +23,10 @@ class Balloon
     return HP;
   }
   
+  public float getDist(){
+    return distFromEnd;
+  }
+  
   public PVector getPos()
   {
     return pos;
