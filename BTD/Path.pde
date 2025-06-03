@@ -20,7 +20,7 @@ class Path{
     strokeWeight(40);
     noFill();
     beginShape();
-    for (PVector p : waypoints) {
+    for(PVector p : waypoints){
       vertex(p.x, p.y);
     }
     endShape();
