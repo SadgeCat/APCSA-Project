@@ -6,9 +6,12 @@ PImage startImage;
 PImage[] balloons = new PImage[8];
 String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
 PImage[] monkeys = new PImage[8];
-String[] mOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
+String[] mOrder = {"Dart_Monkey.png", "Sniper_Monkey.png", "Super_Monkey.png"};
 
 GameController game = new GameController();
+
+int monkeyIdx = -1;
+Monkey tempMonkey = null;
 
 int spawnIdx = 0, spawnInterval = 30;
 boolean waveInProgress = false;
@@ -22,14 +25,16 @@ void setup(){
   startImage = loadImage("Screen/StartScreenBTD.png");
   for(int i = 0; i < 8; i++){
     balloons[i] = loadImage("Balloons/" + bOrder[i]);
+  }
+  for(int i = 0; i < 3; i++){
     monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
   
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{1}, new int[]{10}, new int[]{0}, start)); // 10 red
-  waves.add(createWave(new int[]{5, 5}, new int[]{1, 2}, new int[]{10, 8}, new int[]{10, 10}, new int[]{0, 1}, start)); // 5 red, 5 blue
-  waves.add(createWave(new int[]{10}, new int[]{2}, new int[]{8}, new int[]{10}, new int[]{1}, start)); // 10 blue
-  waves.add(createWave(new int[]{10}, new int[]{3}, new int[]{7}, new int[]{10}, new int[]{2}, start)); // 10 green
-  waves.add(createWave(new int[]{15}, new int[]{4}, new int[]{6}, new int[]{10}, new int[]{3}, start)); // 15 yellow
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{30}, new int[]{0}, start)); // 10 red
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 2}, new int[]{5, 4}, new int[]{30, 30}, new int[]{0, 1}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{10}, new int[]{2}, new int[]{4}, new int[]{30}, new int[]{1}, start)); // 10 blue
+  waves.add(createWave(new int[]{10}, new int[]{3}, new int[]{3}, new int[]{30}, new int[]{2}, start)); // 10 green
+  waves.add(createWave(new int[]{15}, new int[]{4}, new int[]{2}, new int[]{30}, new int[]{3}, start)); // 15 yellow
   
   //String[] fontList = PFont.list();
   //printArray(fontList);
@@ -40,6 +45,7 @@ void draw() {
     initScreen();
   } else if(gameScreen == 1){
     gameScreen();
+    game.update();
     
     if(!waveInProgress && round < waves.size()){
       waveInProgress = true;
@@ -165,7 +171,7 @@ void gameScreen(){
   fill(230, 39, 39);
   text("Lives: " + lives, 220, 20);
   fill(255);
-  text("Round: " + round+1, 420, 20);
+  text("Round: " + (round+1), 420, 20);
   
   // sidebar for monkeys
   fill(40);
@@ -175,7 +181,7 @@ void gameScreen(){
   textFont(createFont("NotoSerifMyanmar-Bold", 22));
   text("Monkeys", width - 140, 20);
   
-  //drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
+  drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
   //drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 200);
   //drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 200);
   //drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
@@ -217,7 +223,7 @@ void drawMonkeyBtn(PImage icon, int x, int y, int width, int height, int cost){
   fill(0);
   textAlign(CENTER, CENTER);
   textFont(createFont("NotoSerifMyanmar-Medium", 18));
-  text(cost, x, y + 3 * height/4);
+  text(cost, x, y + 50);
 }
 
 void addCash(int k){
@@ -258,16 +264,26 @@ void mouseClicked(){
     }
   } else if(gameScreen == 1){
     if(overBtn(width - 206, 120, 120, 120)){
-    
-    }
-    if(overBtn(width - 74, 120, 120, 120)){
-    
-    }
-    if(overBtn(width - 206, 252, 120, 120)){
-    
-    }
-    if(overBtn(width - 74, 252, 120, 120)){
-    
+      monkeyIdx = 0;
+      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 30, monkeys[0]);
+    //} else if(overBtn(width - 74, 120, 120, 120)){
+    //  monkeyIdx = 1;
+    //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 30, monkeys[0]);
+    //} else if(overBtn(width - 206, 252, 120, 120)){
+    //  monkeyIdx = 2;
+    //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 30, monkeys[0]);
+    //} else if(overBtn(width - 74, 252, 120, 120)){
+    //  monkeyIdx = 3;
+    //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 30, monkeys[0]);
+    } else if (monkeyIdx != -1) {
+      tempMonkey.setPos(new PVector(mouseX, mouseY));
+      if(useCash(tempMonkey.getPrice())) {
+        if(!game.placeMonkey(tempMonkey)){
+          cash += tempMonkey.getPrice();
+        }
+      }
+      tempMonkey = null;
+      monkeyIdx = -1;
     }
   } else{
   

@@ -1,6 +1,6 @@
 class GameController{
   private ArrayList<Balloon> balloons = new ArrayList<Balloon>();
-  //private ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
+  private ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
   private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
   private Path p = new Path();
   
@@ -10,6 +10,10 @@ class GameController{
   
   public ArrayList<PVector> getPath(){
     return p.getWayPts();
+  }
+  
+  public ArrayList<Projectile> getProjectiles(){
+    return projectiles;
   }
   
   public void spawnBalloon(Balloon b){
@@ -32,9 +36,26 @@ class GameController{
     return PVector.dist(p, closest);
   }
   
-  public void placeMonkey(PVector pos, float r, float cd, int d){
-    // Monkey m = new Monkey(pos, r, cd, d);
-    // monkeys.add(m);
+  public boolean isOnPath(PVector pos, float monkeyR, float pathR){
+    for(int i = 0; i < p.getWayPts().size()-1; i++){
+      PVector a = p.getWayPts().get(i);
+      PVector b = p.getWayPts().get(i + 1);
+      
+      float d = pointToLine(pos, a, b);
+      if(d < monkeyR + pathR){
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public boolean placeMonkey(Monkey m){
+    if(!isOnPath(m.getPos(), m.getSize(), 20)){
+      monkeys.add(m);
+      return true;
+    } else{
+      return false;
+    }
   }
   
   public void update(){
@@ -42,6 +63,13 @@ class GameController{
     for(Balloon b : balloons){
       if(frameCount % b.getSpeed() == 0){
         b.update(p);
+      }
+    }
+    
+    for(Monkey m : monkeys){
+      // need to add cd
+      if(frameCount % 60 == 0){
+        m.attack(balloons);
       }
     }
     
@@ -63,6 +91,7 @@ class GameController{
   public void display(){
     p.display();
     for(Balloon b : balloons) b.display();
+    for(Monkey m : monkeys) m.display();
     for(Projectile p : projectiles) p.display();
     // also display all balloons monkeys & projectiles
   }

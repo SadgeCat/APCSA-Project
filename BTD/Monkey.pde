@@ -1,15 +1,18 @@
 public class Monkey{
-  int range, size, price;
-  boolean isPlaced;
-  PVector pos;
-  int[] level;
+  private int range, size, price;
+  private PVector pos;
+  private boolean isPlaced;
+  private PImage img;
+  private int[] level;
   
-  public Monkey(String monkeyType, PVector position, int cost,int siz){
+  public Monkey(String monkeyType, PVector position, int r, int cost,int siz, PImage i){
     pos = new PVector(mouseX,mouseY);
+    range = r;
     isPlaced = false;
     price = cost;
     level = new int[2];
     size = siz;
+    img = i;
   }
   
   public int getRange(){
@@ -28,27 +31,33 @@ public class Monkey{
     return pos;
   }
   
+  public void setPos(PVector p){
+    pos = p;
+  }
+  
   //need to replace the b.x and b.y with bloon pos PVector coords
   public void attack(ArrayList<Balloon> lst){
-    for (Ballon b : lst){
-      if (Math.pow(Math.pow(b.x - pos.x,2)+Math.pow(b.y - pos.y,2),0.5) < range){
-        
+    Balloon close = null;
+    for (Balloon b : lst){
+      if (Math.pow(Math.pow(b.getPos().x - pos.x,2)+Math.pow(b.getPos().y - pos.y,2),0.5) < range){
+        if (close == null){
+          close = b;
+        } else {
+          if (close.getDist() < b.getDist()){
+            close = b;
+          } 
+        }
       }
     }
-  }
-  
-  
-  public void placeMonkey(){
-    if (onTrack()){
+    if (close == null){
       return;
     }
-    isPlaced = true;
-    pos = new PVector(mouseX,mouseY);
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),close,1,1);
+    game.getProjectiles().add(proj);
   }
   
-  private boolean onTrack(){
-    for (int i = 0;i < path.size();i++){
-      if (path.get(i)
-    }
+  public void display(){
+    image(img, pos.x, pos.y, size, size);
   }
+
 }
