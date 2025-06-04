@@ -15,6 +15,10 @@ class Path{
     waypoints.add(new PVector(1000,400));
   }
   
+  public ArrayList<PVector> getWayPts(){
+    return waypoints;
+  }
+  
   public void display(){
     stroke(150);
     strokeWeight(40);

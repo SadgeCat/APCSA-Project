@@ -1,22 +1,28 @@
 class Balloon 
 {
   private int HP;
-  private float speed;
+  private int speed;
   private PVector pos;
-  private int wayPointIndex;
-  private PVector[] waypoints;
+  private int size;
+  private int cash;
+  private int pathIndex;
+  private float distFromStart;
+  private PImage img;
   
-  public Balloon(int HP, PVector pos)
+  public Balloon(int HP, int speed, PVector position, int size, int c, PImage i)
   {
     this.HP = HP;
-    this.speed = 5;
-    this.pos = pos;
-    this.wayPointIndex = 0;
+    this.speed = speed;
+    this.size = size;
+    cash = c;
+    pos = position;
+    distFromStart = 0;
+    img = i;
   }
   
   public int getHP()
   {
-    return HP; 
+    return HP;
   }
   
   public PVector getPos()
@@ -24,9 +30,33 @@ class Balloon
     return pos;
   }
   
-  public float getSpeed()
+  public int getSpeed()
   {
     return speed;
+  }
+  
+  public int getCash(){
+    return cash;
+  }
+  
+  public float getDist(){
+    return distFromStart;
+  }
+  
+  public int getPathIndex(){
+    return pathIndex;
+  }
+  
+  public void setHP(int hp){
+    HP = hp;
+  }
+  
+  public void setDist(float d){
+    distFromStart = d;
+  }
+  
+  public void setPathIndex(int idx){
+    pathIndex = idx;
   }
   
   public void pop(int damage)
@@ -34,40 +64,36 @@ class Balloon
     HP -= damage;
   }
   
-  public void updateBalloon()
+  public void update(Path p)
   {
-    if (wayPointIndex >= waypoints.length - 1)
-    {
-      return;
-    }
-    
-    PVector target = waypoints[wayPointIndex + 1];
-    
-    if (target.x == pos.x) 
-    {
-      if (target.y > pos.y) 
-      {
-        pos.y = min(pos.y + speed, target.y);
-      } else 
-      {
-        pos.y = max(pos.y - speed, target.y);
+    if(pathIndex < p.getWayPts().size()){
+      int moveDist = 4;
+      PVector target = p.getWayPts().get(pathIndex);
+      float x = target.x - pos.x;
+      if(x > moveDist) x = moveDist;
+      else if(x < -moveDist) x = -moveDist;
+      float y = target.y - pos.y;
+      if(y > moveDist) y = moveDist;
+      else if(y < -moveDist) y = -moveDist;
+      
+      PVector dir = new PVector(x,y);
+      
+      if(dir.mag() < 2){
+        pos = target.copy();
+        pathIndex++;
+      } else{
+        pos.add(dir);
+        distFromStart += dir.mag();
       }
     }
-    else if (target.y == pos.y) 
-    {
-      if (target.x > pos.x) 
-      {
-        pos.x = min(pos.x + speed, target.x);
-      } 
-      else 
-      {
-        pos.x = max(pos.x - speed, target.x);
-      }
-    }
-
-    if (pos.equals(target)) 
-    {
-      wayPointIndex++;
-    }
+    // move along the path
+  }
+  
+  public void display(){
+    image(img, pos.x, pos.y, size, size);
+  }
+  
+  public boolean reachedEnd(Path path){
+    return pathIndex >= path.getWayPts().size();
   }
 }

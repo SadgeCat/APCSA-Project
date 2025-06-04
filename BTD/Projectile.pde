@@ -1,31 +1,48 @@
 class Projectile{
   private PVector pos;
   private Balloon target;
-  private float speed;
+  private int speed;
   private int damage;
   
-  public Projectile(PVector p, Balloon t, float s, int d){
+  public Projectile(PVector p, Balloon t, int s, int d){
     pos = p;
     target = t;
     speed = s;
     damage = d;
   }
   
-  public void update(){
-    if(target == null) return;
+  public int getSpeed(){
+    return speed;
+  }
+  
+  public boolean update(){
+    if(target == null) return false;
+    
+    int moveDist = 5;
     
     float x = target.getPos().x - pos.x;
-    if(x > speed) x = speed;
-    else if(x < -speed) x = -speed;
+<<<<<<< HEAD
+    if(x > 4) x = 4;
+    else if(x < -4) x = -4;
     float y = target.getPos().y - pos.y;
-    if(y > speed) y = speed;
-    else if(y < -speed) y = -speed;
+    if(y > 4) y = 4;
+    else if(y < -4) y = -4;
+=======
+    if(x > moveDist) x = moveDist;
+    else if(x < -moveDist) x = -moveDist;
+    float y = target.getPos().y - pos.y;
+    if(y > moveDist) y = moveDist;
+    else if(y < -moveDist) y = -moveDist;
+>>>>>>> sadgecat
     
     PVector dir = new PVector(x,y);
-    pos.add(dir);
     
-    if(dir.mag() < speed){
-      //target.setHP(target.getHP() - damage);
+    if(dir.mag() < 1){
+      target.setHP(target.getHP() - damage);
+      return true;
+    } else{
+      pos.add(dir);
+      return false;
     }
   }
   
