@@ -1,13 +1,4 @@
 public class Monkey{
-<<<<<<< HEAD
-  private int range, size, price;
-  private PVector pos;
-  private boolean isPlaced;
-  private PImage img;
-  private int[] level;
-  
-  public Monkey(String monkeyType, PVector position, int r, int cost,int siz, PImage i){
-=======
   private int range, size, price, damage;
   private PVector pos;
   private boolean isPlaced;
@@ -16,7 +7,6 @@ public class Monkey{
   private int[] level;
   
   public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, PImage i){
->>>>>>> sadgecat
     pos = new PVector(mouseX,mouseY);
     range = r;
     isPlaced = false;
@@ -24,10 +14,7 @@ public class Monkey{
     damage = d;
     level = new int[2];
     size = siz;
-<<<<<<< HEAD
-=======
     target = null;
->>>>>>> sadgecat
     img = i;
   }
   
