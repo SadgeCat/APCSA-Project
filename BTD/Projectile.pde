@@ -19,11 +19,11 @@ class Projectile{
     if(target == null) return false;
     
     float x = target.getPos().x - pos.x;
-    if(x > 1) x = 1;
-    else if(x < -1) x = -1;
+    if(x > 4) x = 4;
+    else if(x < -4) x = -4;
     float y = target.getPos().y - pos.y;
-    if(y > 1) y = 1;
-    else if(y < -1) y = -1;
+    if(y > 4) y = 4;
+    else if(y < -4) y = -4;
     
     PVector dir = new PVector(x,y);
     

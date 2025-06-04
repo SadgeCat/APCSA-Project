@@ -5,7 +5,7 @@ class Balloon
   private PVector pos;
   private int size;
   private int pathIndex;
-  private float distFromEnd;
+  private float distFromStart;
   private PImage img;
   
   public Balloon(int HP, int speed, PVector position, int size, PImage i)
@@ -14,17 +14,13 @@ class Balloon
     this.speed = speed;
     this.size = size;
     pos = position;
-    distFromEnd = 0;
+    distFromStart = 0;
     img = i;
   }
   
   public int getHP()
   {
     return HP;
-  }
-  
-  public float getDist(){
-    return distFromEnd;
   }
   
   public PVector getPos()
@@ -35,6 +31,10 @@ class Balloon
   public int getSpeed()
   {
     return speed;
+  }
+  
+  public float getDist(){
+    return distFromStart;
   }
   
   public void setHP(int hp){
@@ -51,20 +51,20 @@ class Balloon
     if(pathIndex < p.getWayPts().size()){
       PVector target = p.getWayPts().get(pathIndex);
       float x = target.x - pos.x;
-      if(x > 1) x = 1;
-      else if(x < -1) x = -1;
+      if(x > 2) x = 2;
+      else if(x < -2) x = -2;
       float y = target.y - pos.y;
-      if(y > 1) y = 1;
-      else if(y < -1) y = -1;
+      if(y > 2) y = 2;
+      else if(y < -2) y = -2;
       
       PVector dir = new PVector(x,y);
       
-      if(dir.mag() < 1){
+      if(dir.mag() < 2){
         pos = target.copy();
         pathIndex++;
       } else{
         pos.add(dir);
-        distFromEnd += dir.mag();
+        distFromStart += dir.mag();
       }
     }
     // move along the path
