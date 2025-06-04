@@ -21,19 +21,11 @@ class Projectile{
     int moveDist = 5;
     
     float x = target.getPos().x - pos.x;
-<<<<<<< HEAD
-    if(x > 4) x = 4;
-    else if(x < -4) x = -4;
-    float y = target.getPos().y - pos.y;
-    if(y > 4) y = 4;
-    else if(y < -4) y = -4;
-=======
     if(x > moveDist) x = moveDist;
     else if(x < -moveDist) x = -moveDist;
     float y = target.getPos().y - pos.y;
     if(y > moveDist) y = moveDist;
     else if(y < -moveDist) y = -moveDist;
->>>>>>> sadgecat
     
     PVector dir = new PVector(x,y);
     

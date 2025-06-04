@@ -45,7 +45,6 @@ void draw() {
     initScreen();
   } else if(gameScreen == 1){
     gameScreen();
-    game.update();
     
     ArrayList<Balloon> balloon = game.getBalloons();
     

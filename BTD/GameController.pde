@@ -71,13 +71,6 @@ class GameController{
       }
     }
     
-    for(Monkey m : monkeys){
-      // need to add cd
-      if(frameCount % 60 == 0){
-        m.attack(balloons);
-      }
-    }
-    
     for(int i = projectiles.size()-1; i >= 0; i--){
       if(frameCount % projectiles.get(i).getSpeed() == 0){
         if(projectiles.get(i).update()){
