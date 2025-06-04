@@ -4,14 +4,18 @@ public class Monkey{
   private boolean isPlaced;
   private PImage img;
   private Balloon target;
+  private int bulletDist;
+  private int cooldown;
   private int[] level;
   
-  public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, PImage i){
+  public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, int bd, int cd, PImage i){
     pos = new PVector(mouseX,mouseY);
     range = r;
     isPlaced = false;
     price = cost;
     damage = d;
+    bulletDist = bd;
+    cooldown = cd;
     level = new int[2];
     size = siz;
     target = null;
@@ -32,6 +36,10 @@ public class Monkey{
   
   public int getDamage(){
     return damage;
+  }
+  
+  public int getCooldown(){
+    return cooldown;
   }
   
   public PVector getPos(){
@@ -66,7 +74,7 @@ public class Monkey{
     if (target == null){
       return;
     }
-    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage);
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist);
     game.getProjectiles().add(proj);
     target = null;
   }
