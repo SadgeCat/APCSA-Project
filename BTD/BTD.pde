@@ -229,6 +229,12 @@ void gameScreen(){
   textAlign(CENTER, TOP);
   textFont(createFont("NotoSerifMyanmar-Bold", 22));
   text("Monkeys", width - 140, 20);
+
+  // play button
+  fill(0, 255, 0);
+  rect(width - 280, height - 70, 280, 70);
+  fill(255);
+  triangle((width - 140) - 27, (height - 35) - 23.5, (width - 140) - 27, (height - 35) + 23.5, (width - 140) + 27, (height - 35));
   
   drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
   //drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 200);
