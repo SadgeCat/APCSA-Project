@@ -92,7 +92,7 @@ class GameController{
       //  }        
       //}
       // need to add cd
-      if(frameCount % 60 == 0){
+      if(frameCount % m.getCooldown() == 0){
         m.attack(balloons);
       }
     }
@@ -116,4 +116,3 @@ class GameController{
     // also display all balloons monkeys & projectiles
   }
 }
-

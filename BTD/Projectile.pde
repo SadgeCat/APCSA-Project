@@ -3,12 +3,14 @@ class Projectile{
   private Balloon target;
   private int speed;
   private int damage;
+  private int bulletDist;
   
-  public Projectile(PVector p, Balloon t, int s, int d){
+  public Projectile(PVector p, Balloon t, int s, int d, int bd){
     pos = p;
     target = t;
     speed = s;
     damage = d;
+    bulletDist = bd;
   }
   
   public int getSpeed(){
@@ -18,7 +20,7 @@ class Projectile{
   public boolean update(){
     if(target == null) return false;
     
-    int moveDist = 5;
+    int moveDist = bulletDist;
     
     float x = target.getPos().x - pos.x;
     if(x > moveDist) x = moveDist;
