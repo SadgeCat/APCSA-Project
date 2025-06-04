@@ -4,15 +4,17 @@ class Balloon
   private int speed;
   private PVector pos;
   private int size;
+  private int cash;
   private int pathIndex;
   private float distFromStart;
   private PImage img;
   
-  public Balloon(int HP, int speed, PVector position, int size, PImage i)
+  public Balloon(int HP, int speed, PVector position, int size, int c, PImage i)
   {
     this.HP = HP;
     this.speed = speed;
     this.size = size;
+    cash = c;
     pos = position;
     distFromStart = 0;
     img = i;
@@ -33,12 +35,28 @@ class Balloon
     return speed;
   }
   
+  public int getCash(){
+    return cash;
+  }
+  
   public float getDist(){
     return distFromStart;
   }
   
+  public int getPathIndex(){
+    return pathIndex;
+  }
+  
   public void setHP(int hp){
     HP = hp;
+  }
+  
+  public void setDist(float d){
+    distFromStart = d;
+  }
+  
+  public void setPathIndex(int idx){
+    pathIndex = idx;
   }
   
   public void pop(int damage)
@@ -49,13 +67,14 @@ class Balloon
   public void update(Path p)
   {
     if(pathIndex < p.getWayPts().size()){
+      int moveDist = 4;
       PVector target = p.getWayPts().get(pathIndex);
       float x = target.x - pos.x;
-      if(x > 2) x = 2;
-      else if(x < -2) x = -2;
+      if(x > moveDist) x = moveDist;
+      else if(x < -moveDist) x = -moveDist;
       float y = target.y - pos.y;
-      if(y > 2) y = 2;
-      else if(y < -2) y = -2;
+      if(y > moveDist) y = moveDist;
+      else if(y < -moveDist) y = -moveDist;
       
       PVector dir = new PVector(x,y);
       
@@ -78,3 +97,4 @@ class Balloon
     return pathIndex >= path.getWayPts().size();
   }
 }
+

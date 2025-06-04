@@ -18,12 +18,14 @@ class Projectile{
   public boolean update(){
     if(target == null) return false;
     
+    int moveDist = 5;
+    
     float x = target.getPos().x - pos.x;
-    if(x > 1) x = 1;
-    else if(x < -1) x = -1;
+    if(x > moveDist) x = moveDist;
+    else if(x < -moveDist) x = -moveDist;
     float y = target.getPos().y - pos.y;
-    if(y > 1) y = 1;
-    else if(y < -1) y = -1;
+    if(y > moveDist) y = moveDist;
+    else if(y < -moveDist) y = -moveDist;
     
     PVector dir = new PVector(x,y);
     

@@ -12,6 +12,10 @@ class GameController{
     return p.getWayPts();
   }
   
+  public ArrayList<Balloon> getBalloons(){
+    return balloons;
+  }
+  
   public ArrayList<Projectile> getProjectiles(){
     return projectiles;
   }
@@ -42,7 +46,7 @@ class GameController{
       PVector b = p.getWayPts().get(i + 1);
       
       float d = pointToLine(pos, a, b);
-      if(d < monkeyR + pathR){
+      if(d < monkeyR/2 + pathR){
         return true;
       }
     }
@@ -59,17 +63,11 @@ class GameController{
   }
   
   public void update(){
+    //HashMap<Balloon, Integer> expectedDamage = new HashMap<Balloon, Integer>();
     // update balloons monkey & projectile
     for(Balloon b : balloons){
       if(frameCount % b.getSpeed() == 0){
         b.update(p);
-      }
-    }
-    
-    for(Monkey m : monkeys){
-      // need to add cd
-      if(frameCount % 60 == 0){
-        m.attack(balloons);
       }
     }
     
@@ -81,11 +79,33 @@ class GameController{
       }
     }
     
-    for(int i = balloons.size()-1; i >= 0; i--){
-      if(balloons.get(i).getHP() <= 0 || balloons.get(i).reachedEnd(p)){
-        balloons.remove(i);
+    for(Monkey m : monkeys){
+      //for(Balloon b : balloons){
+      //  if(Math.pow(Math.pow(b.getPos().x - m.getPos().x,2)+Math.pow(b.getPos().y - m.getPos().y,2),0.5) < m.getRange()){
+      //    int expected = expectedDamage.getOrDefault(b, 0);
+  
+      //    if(b.getHP() > expected){
+      //      m.setTarget(b);
+      //      expectedDamage.put(b, expected + m.getDamage());
+      //      break;
+      //    }
+      //  }        
+      //}
+      // need to add cd
+      if(frameCount % 60 == 0){
+        m.attack(balloons);
       }
     }
+    
+    //for(int i = balloons.size()-1; i >= 0; i--){
+    //  if(balloons.get(i).getHP() <= 0 || balloons.get(i).reachedEnd(p)){
+
+    //    balloons.remove(i);
+    //  }
+    //  else if(balloons.get(i).reachedEnd(p)){
+    //    balloons.remove(i);
+    //  }
+    //}
   }
   
   public void display(){
@@ -96,3 +116,4 @@ class GameController{
     // also display all balloons monkeys & projectiles
   }
 }
+
