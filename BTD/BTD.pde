@@ -2,6 +2,7 @@ int gameScreen = 0;
 int cash = 2000;
 int lives = 100;
 int round = 0;
+int balloonsPopped = 0;
 PImage startImage;
 PImage[] balloons = new PImage[8];
 String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
@@ -32,12 +33,15 @@ void setup(){
     monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
   
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{0}, start)); // 10 red
-  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{20, 10}, new int[]{0, 1}, start)); // 5 red, 5 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{1}, start)); // 10 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{2}, start)); // 10 green
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, start)); // 15 yellow
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{50}, new int[]{4}, start)); // 15 pink
+  // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{4}, new int[]{0}, start)); // 10 red
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{20, 10}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{4}, new int[]{1}, start)); // 10 blue
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{4}, new int[]{2}, start)); // 10 green
+  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, new int[]{3}, start)); // 15 yellow
+  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{50}, new int[]{2}, new int[]{4}, start)); // 15 pink
+  waves.add(createWave(new int[]{5,5,5}, new int[]{1,1,1}, new int[]{2,1,1}, new int[]{40,40,40}, new int[]{40,50,60}, new int[]{3,2,3}, new int[]{3,4,5}, start)); // 5y, 5p, 5w
+  waves.add(createWave(new int[]{20}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{60}, new int[]{3}, new int[]{5}, start)); // 20w
   
   //String[] fontList = PFont.list();
   //printArray(fontList);
@@ -52,48 +56,62 @@ void draw() {
     ArrayList<Balloon> balloon = game.getBalloons();
     
     for(int i = balloon.size()-1; i >= 0; i--){
+      Balloon current = balloon.get(i);
+      PImage balloonImage = current.getImg();
       
-      if(balloon.get(i).reachedEnd(game.p)){
+      if(current.reachedEnd(game.p)){
         
-        if(balloon.get(i).getSpeed() == 5) loseLife(1);
-        else if(balloon.get(i).getSpeed() == 4) loseLife(2);
-        else if(balloon.get(i).getSpeed() == 3) loseLife(3);
-        else if(balloon.get(i).getSpeed() == 2) loseLife(4);
-        else if(balloon.get(i).getSpeed() == 1) loseLife(5);
+        if(balloonImage == balloons[0]) loseLife(1); // Red
+        else if(balloonImage == balloons[1]) loseLife(2); // Blue
+        else if(balloonImage == balloons[2]) loseLife(3); // Green
+        else if(balloonImage == balloons[3]) loseLife(4); // Yellow
+        else if(balloonImage == balloons[4]) loseLife(5); // Pink
 
         balloon.remove(i);
+        balloonsPopped++;
         
-      } else if(balloon.get(i).getHP() <= 0){
-
-        addCash(balloon.get(i).getCash());
+      } else if(current.getHP() <= 0){
+        ArrayList<Balloon> children = new ArrayList<Balloon>();
         
-        if(balloon.get(i).getSpeed() == 5){
-          
-        } else if(balloon.get(i).getSpeed() == 4){
-          Balloon b = new Balloon(1, 5, balloon.get(i).getPos(), 40, 10, balloons[0]);
-          b.setDist(balloon.get(i).getDist());
-          b.setPathIndex(balloon.get(i).getPathIndex());
-          game.spawnBalloon(b);
-        } else if(balloon.get(i).getSpeed() == 3){
-          Balloon b = new Balloon(1, 4, balloon.get(i).getPos(), 40, 20, balloons[1]);
-          b.setDist(balloon.get(i).getDist());
-          b.setPathIndex(balloon.get(i).getPathIndex());
-          game.spawnBalloon(b);
-        } else if(balloon.get(i).getSpeed() == 2){
-          Balloon b = new Balloon(1, 3, balloon.get(i).getPos(), 40, 30, balloons[2]);
-          b.setDist(balloon.get(i).getDist());
-          b.setPathIndex(balloon.get(i).getPathIndex());
-          game.spawnBalloon(b);
-        } else if(balloon.get(i).getSpeed() == 1){
+        addCash(current.getCash());
+        
+        if(balloonImage == balloons[0]){
+        } else if(balloonImage == balloons[1]){
+          Balloon b = new Balloon(1, 5, current.getPos(), 40, 10, 4, balloons[0]);
+          b.setDist(current.getDist());
+          b.setPathIndex(current.getPathIndex());
+          children.add(b);
+        } else if(balloonImage == balloons[2]){
+          Balloon b = new Balloon(1, 4, current.getPos(), 40, 20, 4, balloons[1]);
+          b.setDist(current.getDist());
+          b.setPathIndex(current.getPathIndex());
+          children.add(b);
+        } else if(balloonImage == balloons[3]){
+          Balloon b = new Balloon(1, 3, current.getPos(), 40, 30, 4, balloons[2]);
+          b.setDist(current.getDist());
+          b.setPathIndex(current.getPathIndex());
+          children.add(b);
+        } else if(balloonImage == balloons[4]){
           for(int j = 0; j < 2; j++){
-            Balloon b = new Balloon(1, 2, balloon.get(i).getPos(), 40, 40, balloons[3]);
-            b.setDist(balloon.get(i).getDist());
-            b.setPathIndex(balloon.get(i).getPathIndex());
-            game.spawnBalloon(b);
+            Balloon b = new Balloon(1, 2, current.getPos(), 40, 40, 3, balloons[3]);
+            b.setDist(current.getDist());
+            b.setPathIndex(current.getPathIndex());
+            children.add(b);
           }
-        } 
+        } else if(balloonImage == balloons[5]){
+          for(int j = 0; j < 2; j++){
+            Balloon b = new Balloon(1, 1, current.getPos(), 40, 40, 2, balloons[4]);
+            b.setDist(current.getDist());
+            b.setPathIndex(current.getPathIndex());
+            children.add(b);
+          }
+        }
         
         balloon.remove(i);
+        balloonsPopped++;
+        for(Balloon child : children){
+            game.spawnBalloon(child);
+        }
       }
       
     }
@@ -135,11 +153,11 @@ void draw() {
   }
 }
 
-ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] type, PVector start){
+ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start){
   ArrayList<Balloon> wave = new ArrayList<Balloon>();
   for (int i = 0; i < cnt.length; i++) {
     for (int j = 0; j < cnt[i]; j++) {
-      Balloon b = new Balloon(hp[i], speed[i], start.copy(), size[i], cash[i], balloons[type[i]]);
+      Balloon b = new Balloon(hp[i], speed[i], start.copy(), size[i], cash[i], moveDist[i], balloons[type[i]]);
       wave.add(b);
     }
   }
@@ -227,10 +245,11 @@ void gameScreen(){
   fill(20, 156, 34);
   text("Cash: " + cash, 20, 20);
   fill(230, 39, 39);
-  text("Lives: " + lives, 220, 20);
+  text("Lives: " + lives, 180, 20);
   fill(255);
-  text("Round: " + (round+1), 420, 20);
-  text("Timer: " + waveTimer, 620, 20);
+  text("Round: " + (round+1), 340, 20);
+  text("Timer: " + waveTimer, 500, 20);
+  text("# Popped: " + balloonsPopped, 660, 20);
   
   // sidebar for monkeys
   fill(40);
@@ -241,7 +260,7 @@ void gameScreen(){
   text("Monkeys", width - 140, 20);
   
   // play button
-  if(overBtn(width - 280, height - 70, 280, 70)){
+  if(overBtn(width - 280/2, height - 70/2, 280, 70)){
     fill(50, 200,50);
   } else{
     fill(0, 255,0);
@@ -335,7 +354,7 @@ void mouseClicked(){
     }
   } else if(gameScreen == 1){
     
-    if(overBtn(width - 280, height - 70, 280, 70) && !waveInProgress){
+    if(overBtn(width - 280/2, height - 70/2, 280, 70) && !waveInProgress){
       waveTimer = 0;
     }
     
@@ -344,7 +363,7 @@ void mouseClicked(){
       tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
     } else if(overBtn(width - 74, 120, 120, 120)){
       monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 100, 90, monkeys[1]);
+      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 40, 90, monkeys[1]);
     } else if(overBtn(width - 206, 252, 120, 120)){
       monkeyIdx = 2;
       tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 400, 1000, 60, 1, 20, 10, monkeys[2]);

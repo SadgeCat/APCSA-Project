@@ -5,16 +5,18 @@ class Balloon
   private PVector pos;
   private int size;
   private int cash;
+  private int moveDist;
   private int pathIndex;
   private float distFromStart;
   private PImage img;
   
-  public Balloon(int HP, int speed, PVector position, int size, int c, PImage i)
+  public Balloon(int HP, int speed, PVector position, int size, int c, int md, PImage i)
   {
     this.HP = HP;
     this.speed = speed;
     this.size = size;
     cash = c;
+    moveDist = md;
     pos = position;
     distFromStart = 0;
     img = i;
@@ -35,6 +37,10 @@ class Balloon
     return speed;
   }
   
+  public int getSize(){
+    return size;
+  }
+  
   public int getCash(){
     return cash;
   }
@@ -45,6 +51,10 @@ class Balloon
   
   public int getPathIndex(){
     return pathIndex;
+  }
+  
+  public PImage getImg(){
+    return img;
   }
   
   public void setHP(int hp){
@@ -67,7 +77,6 @@ class Balloon
   public void update(Path p)
   {
     if(pathIndex < p.getWayPts().size()){
-      int moveDist = 4;
       PVector target = p.getWayPts().get(pathIndex);
       float x = target.x - pos.x;
       if(x > moveDist) x = moveDist;
@@ -97,4 +106,3 @@ class Balloon
     return pathIndex >= path.getWayPts().size();
   }
 }
-

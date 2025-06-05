@@ -18,21 +18,17 @@ class Projectile{
   }
   
   public boolean update(){
-    if(target == null) return false;
+    if(target == null || target.getHP() <= 0) return true;
     
     int moveDist = bulletDist;
     
-    float x = target.getPos().x - pos.x;
-    if(x > moveDist) x = moveDist;
-    else if(x < -moveDist) x = -moveDist;
-    float y = target.getPos().y - pos.y;
-    if(y > moveDist) y = moveDist;
-    else if(y < -moveDist) y = -moveDist;
+    PVector toTarget = PVector.sub(target.getPos(), pos);
+    float distance = toTarget.mag();
     
-    PVector dir = new PVector(x,y);
+    PVector dir = PVector.mult(toTarget.normalize(), moveDist);
     
-    if(dir.mag() < 1){
-      target.setHP(target.getHP() - damage);
+    if(distance < target.getSize()/2){
+      target.pop(damage);
       return true;
     } else{
       pos.add(dir);
