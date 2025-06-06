@@ -55,11 +55,15 @@ class GameController{
   
   public boolean placeMonkey(Monkey m){
     if(!isOnPath(m.getPos(), m.getSize(), 20)){
-      monkeys.add(m);
+      m.setPlaced();
       return true;
     } else{
       return false;
     }
+  }
+  
+  public void addMonkey(Monkey m){
+    monkeys.add(m);
   }
   
   public void update(){
@@ -92,7 +96,7 @@ class GameController{
       //  }        
       //}
       // need to add cd
-      if(frameCount % m.getCooldown() == 0){
+      if(frameCount % m.getCooldown() == 0 && m.getPlaced()){
         m.attack(balloons);
       }
     }
@@ -111,7 +115,21 @@ class GameController{
   public void display(){
     p.display();
     for(Balloon b : balloons) b.display();
-    for(Monkey m : monkeys) m.display();
+    for(Monkey m : monkeys){
+      if (!m.getPlaced()){
+        if (m.getRange() == 2000){
+          m.setPos(new PVector(mouseX,mouseY));
+        } else {
+          fill(100, 100, 100, 100);
+          if (isOnPath(m.getPos(), m.getSize(), 20)){
+            fill(255,10,10,100);
+          }
+          circle(mouseX,mouseY,m.getRange());
+        }
+        m.setPos(new PVector(mouseX,mouseY));
+      }
+      m.display();
+    }
     for(Projectile p : projectiles) p.display();
     // also display all balloons monkeys & projectiles
   }

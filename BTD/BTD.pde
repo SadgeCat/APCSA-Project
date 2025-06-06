@@ -361,12 +361,15 @@ void mouseClicked(){
     if(overBtn(width - 206, 120, 120, 120)){
       monkeyIdx = 0;
       tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
+      game.addMonkey(tempMonkey);
     } else if(overBtn(width - 74, 120, 120, 120)){
       monkeyIdx = 1;
       tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 40, 90, monkeys[1]);
+      game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
       monkeyIdx = 2;
       tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 400, 1000, 60, 1, 20, 10, monkeys[2]);
+      game.addMonkey(tempMonkey);
     //} else if(overBtn(width - 74, 252, 120, 120)){
     //  monkeyIdx = 3;
     //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);

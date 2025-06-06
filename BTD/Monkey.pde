@@ -30,6 +30,10 @@ public class Monkey{
     return size;
   }
   
+  public boolean getPlaced(){
+    return isPlaced;
+  }
+  
   public int getPrice(){
     return price;
   }
@@ -56,6 +60,10 @@ public class Monkey{
   
   public void setTarget(Balloon b){
     target = b;
+  }
+  
+  public void setPlaced(){
+    isPlaced = true;
   }
   
   //need to replace the b.x and b.y with bloon pos PVector coords
