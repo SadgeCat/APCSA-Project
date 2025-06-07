@@ -1,4 +1,4 @@
-int gameScreen = 0;
+int gameScreen = 2;
 int cash = 2000;
 int lives = 100;
 int round = 0;
@@ -35,7 +35,7 @@ void setup(){
   
   // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
   waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{4}, new int[]{0}, start)); // 10 red
-  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{20, 10}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{10, 20}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
   waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{4}, new int[]{1}, start)); // 10 blue
   waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{4}, new int[]{2}, start)); // 10 green
   waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, new int[]{3}, start)); // 15 yellow
@@ -166,6 +166,7 @@ ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[
 
 void initScreen(){
   background(30, 30, 30);
+  imageMode(CORNER);
   image(startImage, 0, 0, width, height);
   
   // title box
@@ -288,6 +289,26 @@ void gameOverScreen(){
   
   if(win) text("VICTORY", width/2, height/2 - 100);
   else text("DEFEAT", width/2, height/2 - 100);
+  
+  textFont(createFont("NotoSerifMyanmar-Medium", 30));
+  
+  if(overBtn(width/2-140, height/2+40, 180, 100)){
+    fill(26, 82, 99);
+  } else{
+    fill(43, 143, 173);
+  }
+  rect(width/2-140, height/2+40, 180, 100, 10);
+  fill(0);
+  text("Play Again", width/2-140, height/2+40);
+  
+  if(overBtn(width/2+140, height/2+40, 180, 100)){
+    fill(84, 13, 20);
+  } else{
+    fill(156, 19, 9);
+  }
+  rect(width/2+140, height/2+40, 180, 100, 10);
+  fill(0);
+  text("Quit", width/2+140, height/2+40);
 }
 
 boolean overBtn(int x, int y, int width, int height){
@@ -361,12 +382,15 @@ void mouseClicked(){
     if(overBtn(width - 206, 120, 120, 120)){
       monkeyIdx = 0;
       tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
+      game.addMonkey(tempMonkey);
     } else if(overBtn(width - 74, 120, 120, 120)){
       monkeyIdx = 1;
       tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 40, 90, monkeys[1]);
+      game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
       monkeyIdx = 2;
       tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 400, 1000, 60, 1, 20, 10, monkeys[2]);
+      game.addMonkey(tempMonkey);
     //} else if(overBtn(width - 74, 252, 120, 120)){
     //  monkeyIdx = 3;
     //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
@@ -381,7 +405,16 @@ void mouseClicked(){
       monkeyIdx = -1;
     }
   } else{
-  
+    if(overBtn(width/2-140, height/2+40, 180, 100)){
+      cash = 2000;
+      lives = 100;
+      round = 0;
+      balloonsPopped = 0;
+      gameScreen = 0;
+    }
+    if(overBtn(width/2+140, height/2+40, 180, 100)){
+      exit();
+    }
   }
   if(mouseButton == LEFT){
     
