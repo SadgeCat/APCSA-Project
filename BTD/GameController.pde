@@ -2,8 +2,9 @@ class GameController{
   private ArrayList<Balloon> balloons = new ArrayList<Balloon>();
   private ArrayList<Monkey> monkeys = new ArrayList<Monkey>();
   private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
-  private Path p = new Path();
   
+  private Path p;
+    
   public GameController(){
     
   }
@@ -16,8 +17,16 @@ class GameController{
     return balloons;
   }
   
+  public ArrayList<Monkey> getMonkeys(){
+    return monkeys;
+  }
+  
   public ArrayList<Projectile> getProjectiles(){
     return projectiles;
+  }
+  
+  public void setPath(Path path){
+    p = path;
   }
   
   public void spawnBalloon(Balloon b){

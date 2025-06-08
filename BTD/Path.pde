@@ -1,18 +1,19 @@
 class Path{
   private ArrayList<PVector> waypoints = new ArrayList<PVector>();
   
-  public Path(){
-    waypoints.add(new PVector(0,400));
+  public Path(ArrayList<PVector> wpts){
+    //waypoints.add(new PVector(0,400));
     
-    // can change later to randomly generate path
-    waypoints.add(new PVector(100,400));
-    waypoints.add(new PVector(100,600));
-    waypoints.add(new PVector(500,600));
-    waypoints.add(new PVector(500,100));
-    waypoints.add(new PVector(700,100));
-    waypoints.add(new PVector(700,400));
+    //waypoints.add(new PVector(100,400));
+    //waypoints.add(new PVector(100,600));
+    //waypoints.add(new PVector(500,600));
+    //waypoints.add(new PVector(500,100));
+    //waypoints.add(new PVector(700,100));
+    //waypoints.add(new PVector(700,400));
     
-    waypoints.add(new PVector(1000,400));
+    //waypoints.add(new PVector(1000,400));
+    
+    waypoints = wpts;
   }
   
   public ArrayList<PVector> getWayPts(){
