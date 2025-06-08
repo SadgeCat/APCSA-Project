@@ -11,6 +11,9 @@ String[] mOrder = {"Dart_Monkey.png", "Sniper_Monkey.png", "Super_Monkey.png"};
 
 GameController game = new GameController();
 
+Map maps = new Map();
+int mapIdx = 0;
+
 int monkeyIdx = -1;
 Monkey tempMonkey = null;
 
@@ -20,7 +23,6 @@ int spawnIdx = 0, spawnInterval = 30;
 boolean waveInProgress = false;
 boolean win = false;
 
-PVector start = game.getPath().get(0);
 ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
 
 void setup(){
@@ -33,15 +35,9 @@ void setup(){
     monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
   
-  // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{4}, new int[]{0}, start)); // 10 red
-  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{10, 20}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{4}, new int[]{1}, start)); // 10 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{4}, new int[]{2}, start)); // 10 green
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, new int[]{3}, start)); // 15 yellow
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{50}, new int[]{2}, new int[]{4}, start)); // 15 pink
-  waves.add(createWave(new int[]{5,5,5}, new int[]{1,1,1}, new int[]{2,1,1}, new int[]{40,40,40}, new int[]{40,50,60}, new int[]{3,2,3}, new int[]{3,4,5}, start)); // 5y, 5p, 5w
-  waves.add(createWave(new int[]{20}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{60}, new int[]{3}, new int[]{5}, start)); // 20w
+  game.setPath(maps.getMaps().get(mapIdx));
+  PVector start = game.getPath().get(0);
+  createWaves(start);
   
   //String[] fontList = PFont.list();
   //printArray(fontList);
@@ -150,6 +146,8 @@ void draw() {
   } else if(gameScreen == 2){
     gameScreen();
     gameOverScreen();
+  } else if(gameScreen == 3){
+    mapSelectScreen();  
   }
 }
 
@@ -162,6 +160,19 @@ ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[
     }
   }
   return wave;
+}
+
+void createWaves(PVector start) {
+  waves.clear();
+  // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{4}, new int[]{0}, start)); // 10 red
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{10, 20}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{4}, new int[]{1}, start)); // 10 blue
+  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{4}, new int[]{2}, start)); // 10 green
+  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, new int[]{3}, start)); // 15 yellow
+  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{50}, new int[]{2}, new int[]{4}, start)); // 15 pink
+  waves.add(createWave(new int[]{5,5,5}, new int[]{1,1,1}, new int[]{2,1,1}, new int[]{40,40,40}, new int[]{40,50,60}, new int[]{3,2,3}, new int[]{3,4,5}, start)); // 5y, 5p, 5w
+  waves.add(createWave(new int[]{20}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{60}, new int[]{3}, new int[]{5}, start)); // 20w
 }
 
 void initScreen(){
@@ -231,6 +242,55 @@ void initScreen(){
     text("get scammed bozo", width/2 + 300, 500);
   }
   
+  // select map button
+  if(overBtn(width/2, 550, 200, 60)){
+    fill(100);
+  } else{
+    fill(200);
+  }
+  rect(width/2, 550, 200, 60, 10);
+  fill(0);
+  textFont(createFont("NotoSerifMyanmar-Medium", 24));
+  text("Choose Map", width/2, 550);
+}
+
+void mapSelectScreen(){
+  background(40);
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textFont(createFont("NotoSerifMyanmar-Bold", 36));
+  text("Select a Map", width/2, 80);
+  
+  for(int i = 0; i < 5; i++){
+    int btnX = 150 + i * 200;
+    int btnY = height / 2;
+    int btnW = 120;
+    int btnH = 80;
+
+    if(overBtn(btnX, btnY, btnW, btnH)){
+      fill(100, 180, 250);
+    } else{
+      fill(180);
+    }
+
+    rect(btnX, btnY, btnW, btnH, 12);
+    fill(0);
+    textFont(createFont("NotoSerifMyanmar-Medium", 20));
+    text("Map " + (i+1), btnX, btnY);
+  }
+
+  // return to starting screen
+  int backX = width / 2;
+  int backY = height - 100;
+  if(overBtn(backX, backY, 160, 60)){
+    fill(100);
+  } else{
+    fill(200);
+  }
+  rect(backX, backY, 160, 60, 10);
+  fill(0);
+  textFont(createFont("NotoSerifMyanmar-Medium", 22));
+  text("Back", backX, backY);
 }
 
 void gameScreen(){
@@ -373,6 +433,10 @@ void mouseClicked(){
       if(r >= 1) cash+=50;
       else cash-=100;
     }
+    if(overBtn(width/2, 550, 200, 60)){
+      gameScreen = 3;
+    }
+    
   } else if(gameScreen == 1){
     
     if(overBtn(width - 280/2, height - 70/2, 280, 70) && !waveInProgress){
@@ -404,16 +468,41 @@ void mouseClicked(){
       tempMonkey = null;
       monkeyIdx = -1;
     }
-  } else{
+    
+  } else if(gameScreen == 2){
     if(overBtn(width/2-140, height/2+40, 180, 100)){
       cash = 2000;
       lives = 100;
       round = 0;
       balloonsPopped = 0;
       gameScreen = 0;
+      
+      game.getMonkeys().clear();
+      PVector start = game.getPath().get(0);
+      createWaves(start);
     }
     if(overBtn(width/2+140, height/2+40, 180, 100)){
       exit();
+    }
+    
+  } else if(gameScreen == 3){
+    for(int i = 0; i < 5; i++){
+      int btnX = 150 + i * 200;
+      int btnY = height / 2;
+      int btnW = 120;
+      int btnH = 80;
+      if(overBtn(btnX, btnY, btnW, btnH)){
+        mapIdx = i;
+        
+        game.setPath(maps.getMaps().get(mapIdx));
+        PVector start = game.getPath().get(0);
+        createWaves(start);
+        
+        gameScreen = 1;
+      }
+    }
+    if(overBtn(width / 2, height - 100, 160, 60)){
+      gameScreen = 0;
     }
   }
   if(mouseButton == LEFT){
