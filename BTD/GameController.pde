@@ -133,7 +133,7 @@ class GameController{
           if (isOnPath(m.getPos(), m.getSize(), 20)){
             fill(255,10,10,100);
           }
-          circle(mouseX,mouseY,m.getRange());
+          circle(mouseX,mouseY,2*m.getRange());
         }
         m.setPos(new PVector(mouseX,mouseY));
       }

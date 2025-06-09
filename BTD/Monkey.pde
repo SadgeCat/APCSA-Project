@@ -7,6 +7,7 @@ public class Monkey{
   private int bulletDist;
   private int cooldown;
   private int[] level;
+  private float angle;
   
   public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, int bd, int cd, PImage i){
     pos = new PVector(mouseX,mouseY);
@@ -82,13 +83,26 @@ public class Monkey{
     if (target == null){
       return;
     }
+    rotateMonkey(target.getPos());
     Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist);
     game.getProjectiles().add(proj);
     target = null;
   }
   
   public void display(){
-    image(img, pos.x, pos.y, size, size);
+    pushMatrix();
+    translate(pos.x,pos.y);
+    rotate(angle);
+    image(img, 0, 0, size, size);
+    popMatrix();
+  }
+  
+  private void rotateMonkey(PVector b){
+    float y = pos.y-b.y;
+    float x = b.x-pos.x;
+    if (b.y <= pos.y){
+      angle = atan(y/x);
+    }
   }
 
 }
