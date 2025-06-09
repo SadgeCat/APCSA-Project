@@ -25,6 +25,10 @@ boolean win = false;
 
 ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
 
+int[] speedList = {5, 4, 3, 2, 1, 1};
+int[] sizeList = {40, 40, 40, 40, 40, 40}; // will change sizes later
+int[] moveDistList = {4, 4, 4, 3, 2, 3};
+
 void setup(){
   size(1280,720);
   startImage = loadImage("Screen/StartScreenBTD.png");
@@ -53,60 +57,34 @@ void draw() {
     
     for(int i = balloon.size()-1; i >= 0; i--){
       Balloon current = balloon.get(i);
-      PImage balloonImage = current.getImg();
       
       if(current.reachedEnd(game.p)){
         
-        if(balloonImage == balloons[0]) loseLife(1); // Red
-        else if(balloonImage == balloons[1]) loseLife(2); // Blue
-        else if(balloonImage == balloons[2]) loseLife(3); // Green
-        else if(balloonImage == balloons[3]) loseLife(4); // Yellow
-        else if(balloonImage == balloons[4]) loseLife(5); // Pink
+        loseLife(current.getHP());
 
         balloon.remove(i);
         balloonsPopped++;
         
-      } else if(current.getHP() <= 0){
-        ArrayList<Balloon> children = new ArrayList<Balloon>();
+      } else if(current.getHP() != current.getPrevHP()){
         
-        addCash(current.getCash());
+        int currentHP = current.getHP();
+        addCash(10);
         
-        if(balloonImage == balloons[0]){
-        } else if(balloonImage == balloons[1]){
-          Balloon b = new Balloon(1, 5, current.getPos(), 40, 10, 4, balloons[0]);
-          b.setDist(current.getDist());
-          b.setPathIndex(current.getPathIndex());
-          children.add(b);
-        } else if(balloonImage == balloons[2]){
-          Balloon b = new Balloon(1, 4, current.getPos(), 40, 20, 4, balloons[1]);
-          b.setDist(current.getDist());
-          b.setPathIndex(current.getPathIndex());
-          children.add(b);
-        } else if(balloonImage == balloons[3]){
-          Balloon b = new Balloon(1, 3, current.getPos(), 40, 30, 4, balloons[2]);
-          b.setDist(current.getDist());
-          b.setPathIndex(current.getPathIndex());
-          children.add(b);
-        } else if(balloonImage == balloons[4]){
-          for(int j = 0; j < 2; j++){
-            Balloon b = new Balloon(1, 2, current.getPos(), 40, 40, 3, balloons[3]);
+        if (currentHP > 0)
+        {    
+          if (current.getPrevHP() == 6) {
+            Balloon b = new Balloon(5, speedList[4], current.getPos().copy(), sizeList[4], moveDistList[4], balloons[4]);
             b.setDist(current.getDist());
             b.setPathIndex(current.getPathIndex());
-            children.add(b);
+            game.spawnBalloon(b);
           }
-        } else if(balloonImage == balloons[5]){
-          for(int j = 0; j < 2; j++){
-            Balloon b = new Balloon(1, 1, current.getPos(), 40, 40, 2, balloons[4]);
-            b.setDist(current.getDist());
-            b.setPathIndex(current.getPathIndex());
-            children.add(b);
-          }
+          
+          current.changeStats(speedList[currentHP - 1], sizeList[currentHP - 1], moveDistList[currentHP - 1], balloons[currentHP - 1]);
         }
-        
-        balloon.remove(i);
-        balloonsPopped++;
-        for(Balloon child : children){
-            game.spawnBalloon(child);
+        else if (currentHP == 0)
+        {
+          balloon.remove(i);
+          balloonsPopped++;
         }
       }
       
@@ -151,11 +129,11 @@ void draw() {
   }
 }
 
-ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start){
+ArrayList<Balloon> createWave(int[] cnt, int[] hp, PVector start){
   ArrayList<Balloon> wave = new ArrayList<Balloon>();
   for (int i = 0; i < cnt.length; i++) {
     for (int j = 0; j < cnt[i]; j++) {
-      Balloon b = new Balloon(hp[i], speed[i], start.copy(), size[i], cash[i], moveDist[i], balloons[type[i]]);
+      Balloon b = new Balloon(hp[i], speedList[hp[i] - 1], start.copy(), sizeList[hp[i] - 1], moveDistList[hp[i] - 1], balloons[hp[i] - 1]);
       wave.add(b);
     }
   }
@@ -165,14 +143,14 @@ ArrayList<Balloon> createWave(int[] cnt, int[] hp, int[] speed, int[] size, int[
 void createWaves(PVector start) {
   waves.clear();
   // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{5}, new int[]{40}, new int[]{10}, new int[]{4}, new int[]{0}, start)); // 10 red
-  waves.add(createWave(new int[]{5, 5}, new int[]{1, 1}, new int[]{5, 4}, new int[]{40, 40}, new int[]{10, 20}, new int[]{4, 4}, new int[]{0, 1}, start)); // 5 red, 5 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{4}, new int[]{40}, new int[]{20}, new int[]{4}, new int[]{1}, start)); // 10 blue
-  waves.add(createWave(new int[]{10}, new int[]{1}, new int[]{3}, new int[]{40}, new int[]{30}, new int[]{4}, new int[]{2}, start)); // 10 green
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{2}, new int[]{40}, new int[]{40}, new int[]{3}, new int[]{3}, start)); // 15 yellow
-  waves.add(createWave(new int[]{15}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{50}, new int[]{2}, new int[]{4}, start)); // 15 pink
-  waves.add(createWave(new int[]{5,5,5}, new int[]{1,1,1}, new int[]{2,1,1}, new int[]{40,40,40}, new int[]{40,50,60}, new int[]{3,2,3}, new int[]{3,4,5}, start)); // 5y, 5p, 5w
-  waves.add(createWave(new int[]{20}, new int[]{1}, new int[]{1}, new int[]{40}, new int[]{60}, new int[]{3}, new int[]{5}, start)); // 20w
+  waves.add(createWave(new int[]{10}, new int[]{1}, start)); // 10 red
+  waves.add(createWave(new int[]{5, 5}, new int[]{1, 2}, start)); // 5 red, 5 blue
+  waves.add(createWave(new int[]{10}, new int[]{2}, start)); // 10 blue
+  waves.add(createWave(new int[]{10}, new int[]{3}, start)); // 10 green
+  waves.add(createWave(new int[]{15}, new int[]{4}, start)); // 15 yellow
+  waves.add(createWave(new int[]{15}, new int[]{5}, start)); // 15 pink
+  waves.add(createWave(new int[]{5,5,5}, new int[]{4,5,6}, start)); // 5y, 5p, 5w
+  waves.add(createWave(new int[]{20}, new int[]{6}, start)); // 20w
 }
 
 void initScreen(){
