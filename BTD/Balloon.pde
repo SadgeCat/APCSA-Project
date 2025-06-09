@@ -1,25 +1,39 @@
 class Balloon 
-{
+{ 
   private int HP;
+  private int prevHP; // Hp before updated to hceck if hp changes 
   private int speed;
   private PVector pos;
   private int size;
-  private int cash;
   private int moveDist;
   private int pathIndex;
   private float distFromStart;
   private PImage img;
   
-  public Balloon(int HP, int speed, PVector position, int size, int c, int md, PImage i)
+  public Balloon(int HP, int speed, PVector position, int size, int md, PImage i)
   {
     this.HP = HP;
+    this.prevHP = HP;
     this.speed = speed;
     this.size = size;
-    cash = c;
     moveDist = md;
     pos = position;
     distFromStart = 0;
     img = i;
+  }
+  
+  public void changeStats(int speed, int size, int md, PImage i)
+  {
+    this.speed = speed;
+    this.size = size;
+    moveDist = md;
+    img = i;
+    prevHP = HP;
+  }
+  
+  public void setPrevHP(int HP)
+  {
+    prevHP = HP;
   }
   
   public int getHP()
@@ -41,16 +55,17 @@ class Balloon
     return size;
   }
   
-  public int getCash(){
-    return cash;
-  }
-  
   public float getDist(){
     return distFromStart;
   }
   
   public int getPathIndex(){
     return pathIndex;
+  }
+  
+  public int getPrevHP()
+  {
+    return prevHP;
   }
   
   public PImage getImg(){
@@ -72,6 +87,10 @@ class Balloon
   public void pop(int damage)
   {
     HP -= damage;
+    if (HP < 0)
+    {
+      HP = 0;
+    }
   }
   
   public void update(Path p)
