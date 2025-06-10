@@ -101,7 +101,9 @@ public class Monkey{
     float y = pos.y-b.y;
     float x = b.x-pos.x;
     if (b.y <= pos.y){
-      angle = atan(y/x);
+      angle = atan(x/y);
+    } else {
+      angle = atan(x/y) + PI;
     }
   }
 
