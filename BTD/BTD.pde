@@ -1,4 +1,4 @@
-int gameScreen = 2;
+int gameScreen = 0;
 int cash = 2000;
 int lives = 100;
 int round = 0;
@@ -16,6 +16,7 @@ int mapIdx = 0;
 
 int monkeyIdx = -1;
 Monkey tempMonkey = null;
+Monkey selectedMonkey = null;
 
 int timeBetweenWave = 30;
 int waveTimer = timeBetweenWave;
@@ -312,6 +313,8 @@ void gameScreen(){
   drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 400);
   drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 1000);
   //drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
+  
+  drawMonkeyUI();
 }
 
 void gameOverScreen(){
@@ -354,6 +357,66 @@ boolean overBtn(int x, int y, int width, int height){
     return true;
   } else{
     return false;
+  }
+}
+
+void drawMonkeyUI(){
+  if(selectedMonkey != null){
+    // main frame
+    fill(60);
+    rectMode(CORNER);
+    rect(width - 280, height - 210, 280, 140, 10);
+    
+    // monkey name and stats
+    fill(255);
+    textAlign(LEFT, TOP);
+    textFont(createFont("NotoSerifMyanmar-Bold", 18));
+    text(selectedMonkey.getName(), width - 270, height - 200);
+    
+    textFont(createFont("NotoSerifMyanmar-Medium", 14));
+    text("Damage: " + selectedMonkey.getDamage(), width - 270, height - 175);
+    text("Range: " + selectedMonkey.getRange(), width - 270, height - 155);
+    text("Attack CD: " + selectedMonkey.getCooldown(), width - 150, height - 175);
+    
+    // sell button (50% refund)
+    int sellValue = selectedMonkey.getPrice()/2;
+    if(overBtn(width - 230, height - 100, 80, 30)){
+      fill(200, 50, 50);
+    } else{
+      fill(255, 80, 80);
+    }
+    rectMode(CENTER);
+    rect(width - 230, height - 100, 80, 30, 5);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textFont(createFont("NotoSerifMyanmar-Medium", 14));
+    text("Sell ($" + sellValue + ")", width - 230, height - 100);
+    
+    // Upgrade buttons
+    if(overBtn(width - 100, height - 135, 110, 30)){
+      fill(50, 200, 50);
+    } else{
+      fill(80, 255, 80);
+    }
+    rectMode(CENTER);
+    rect(width - 100, height - 135, 110, 30, 5);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textFont(createFont("NotoSerifMyanmar-Medium", 14));
+    text("Upgrade ($" + selectedMonkey.getPrice() + ")", width - 100, height - 135);
+    
+    if(overBtn(width - 100, height - 100, 110, 30)){
+      fill(50, 200, 50);
+    } else{
+      fill(80, 255, 80);
+    }
+    rectMode(CENTER);
+    rect(width - 100, height - 100, 110, 30, 5);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textFont(createFont("NotoSerifMyanmar-Medium", 14));
+    text("Upgrade ($" + selectedMonkey.getPrice() + ")", width - 100, height - 100);
+
   }
 }
 
@@ -422,14 +485,17 @@ void mouseClicked(){
     }
     
     if(overBtn(width - 206, 120, 120, 120)){
+      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 0;
       tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 74, 120, 120, 120)){
+      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 1;
       tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 40, 90, monkeys[1]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
+      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 2;
       tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 400, 1000, 60, 1, 20, 10, monkeys[2]);
       game.addMonkey(tempMonkey);
@@ -441,10 +507,18 @@ void mouseClicked(){
       if(useCash(tempMonkey.getPrice())) {
         if(!game.placeMonkey(tempMonkey)){
           cash += tempMonkey.getPrice();
+          game.getMonkeys().remove(game.getMonkeys().size()-1);
+        } else{
+          selectedMonkey = tempMonkey;
+          tempMonkey = null;
+          monkeyIdx = -1;
         }
+      } else{
+        tempMonkey = null;
+        monkeyIdx = -1;
+        game.getMonkeys().remove(game.getMonkeys().size()-1);
       }
-      tempMonkey = null;
-      monkeyIdx = -1;
+      
     }
     
   } else if(gameScreen == 2){

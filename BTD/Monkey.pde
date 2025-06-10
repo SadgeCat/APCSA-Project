@@ -1,5 +1,6 @@
 public class Monkey{
   private int range, size, price, damage;
+  private String name;
   private PVector pos;
   private boolean isPlaced;
   private PImage img;
@@ -10,6 +11,7 @@ public class Monkey{
   private float angle;
   
   public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, int bd, int cd, PImage i){
+    name = monkeyType;
     pos = new PVector(mouseX,mouseY);
     range = r;
     isPlaced = false;
@@ -21,6 +23,10 @@ public class Monkey{
     size = siz;
     target = null;
     img = i;
+  }
+  
+  public String getName(){
+    return name;
   }
   
   public int getRange(){
@@ -84,7 +90,10 @@ public class Monkey{
       return;
     }
     rotateMonkey(target.getPos());
-    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist);
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, null);
+    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "dart");
+    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "bullet");
+    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "laser");
     game.getProjectiles().add(proj);
     target = null;
   }
