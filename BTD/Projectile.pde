@@ -4,13 +4,15 @@ class Projectile{
   private int speed;
   private int damage;
   private int bulletDist;
+  private String type;
   
-  public Projectile(PVector p, Balloon t, int s, int d, int bd){
+  public Projectile(PVector p, Balloon t, int s, int d, int bd, String tp){
     pos = p;
     target = t;
     speed = s;
     damage = d;
     bulletDist = bd;
+    type = tp;
   }
   
   public int getSpeed(){
@@ -43,8 +45,25 @@ class Projectile{
     translate(pos.x, pos.y);
     rotate(atan2(toTarget.y, toTarget.x));
     
-    fill(0);
-    ellipse(0, 0, 15, 6);
+    switch(type){
+      case "dart":
+        fill(139, 69, 19);
+        triangle(-10, -5, -10, 5, 10, 0);
+        break;
+      case "laser":
+        stroke(255, 0, 0);
+        strokeWeight(5);
+        line(0, 0, 15, 0);
+        noStroke();
+        break;
+      case "bullet":
+        fill(80);
+        ellipse(0, 0, 15, 8);
+        break;
+      default:
+        fill(0);
+        ellipse(0, 0, 10, 10);
+    }
     
     popMatrix();
   }

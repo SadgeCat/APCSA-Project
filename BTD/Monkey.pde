@@ -1,5 +1,6 @@
 public class Monkey{
   private int range, size, price, damage;
+  private String name;
   private PVector pos;
   private boolean isPlaced;
   private PImage img;
@@ -7,8 +8,10 @@ public class Monkey{
   private int bulletDist;
   private int cooldown;
   private int[] level;
+  private float angle;
   
   public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, int bd, int cd, PImage i){
+    name = monkeyType;
     pos = new PVector(mouseX,mouseY);
     range = r;
     isPlaced = false;
@@ -22,12 +25,20 @@ public class Monkey{
     img = i;
   }
   
+  public String getName(){
+    return name;
+  }
+  
   public int getRange(){
     return range;
   }
   
   public int getSize(){
     return size;
+  }
+  
+  public boolean getPlaced(){
+    return isPlaced;
   }
   
   public int getPrice(){
@@ -58,6 +69,10 @@ public class Monkey{
     target = b;
   }
   
+  public void setPlaced(){
+    isPlaced = true;
+  }
+  
   //need to replace the b.x and b.y with bloon pos PVector coords
   public void attack(ArrayList<Balloon> lst){
     for (Balloon b : lst){
@@ -74,13 +89,31 @@ public class Monkey{
     if (target == null){
       return;
     }
-    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist);
+    rotateMonkey(target.getPos());
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, null);
+    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "dart");
+    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "bullet");
+    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "laser");
     game.getProjectiles().add(proj);
     target = null;
   }
   
   public void display(){
-    image(img, pos.x, pos.y, size, size);
+    pushMatrix();
+    translate(pos.x,pos.y);
+    rotate(angle);
+    image(img, 0, 0, size, size);
+    popMatrix();
+  }
+  
+  private void rotateMonkey(PVector b){
+    float y = pos.y-b.y;
+    float x = b.x-pos.x;
+    if (b.y <= pos.y){
+      angle = atan(x/y);
+    } else {
+      angle = atan(x/y) + PI;
+    }
   }
 
 }
