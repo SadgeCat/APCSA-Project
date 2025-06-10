@@ -480,6 +480,29 @@ void mouseClicked(){
     
   } else if(gameScreen == 1){
     
+    if(overBtn(width - 230, height - 100, 80, 30) && selectedMonkey != null){
+      addCash(selectedMonkey.getPrice() / 2);
+      game.getMonkeys().remove(selectedMonkey);
+      selectedMonkey = null;
+      return;
+    }
+    
+    if(mouseButton == LEFT && monkeyIdx == -1 && tempMonkey == null){
+      selectedMonkey = null;
+      
+      for(Monkey m : game.getMonkeys()){
+        float distance = dist(mouseX, mouseY, m.getPos().x, m.getPos().y);
+        if(distance < m.getSize()/2){
+          selectedMonkey = m;
+          break;
+        }
+      }
+      
+      if(selectedMonkey != null){
+        return;
+      }
+    }
+    
     if(overBtn(width - 280/2, height - 70/2, 280, 70) && !waveInProgress){
       waveTimer = 0;
     }
@@ -507,6 +530,8 @@ void mouseClicked(){
       if(useCash(tempMonkey.getPrice())) {
         if(!game.placeMonkey(tempMonkey)){
           cash += tempMonkey.getPrice();
+          tempMonkey = null;
+          monkeyIdx = -1;
           game.getMonkeys().remove(game.getMonkeys().size()-1);
         } else{
           selectedMonkey = tempMonkey;
@@ -528,6 +553,8 @@ void mouseClicked(){
       round = 0;
       balloonsPopped = 0;
       gameScreen = 0;
+      
+      selectedMonkey = null;
       
       game.getMonkeys().clear();
       PVector start = game.getPath().get(0);
