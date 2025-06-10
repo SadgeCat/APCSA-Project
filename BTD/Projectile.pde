@@ -37,7 +37,15 @@ class Projectile{
   }
   
   public void display(){
+    PVector toTarget = PVector.sub(target.getPos(), pos);
+  
+    pushMatrix();
+    translate(pos.x, pos.y);
+    rotate(atan2(toTarget.y, toTarget.x));
+    
     fill(0);
-    ellipse(pos.x, pos.y, 10, 10);
+    ellipse(0, 0, 15, 6);
+    
+    popMatrix();
   }
 }
