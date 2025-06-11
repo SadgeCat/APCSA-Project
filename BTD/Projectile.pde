@@ -1,30 +1,34 @@
 class Projectile{
   private PVector pos;
   private Balloon target;
-  private float speed;
+  private int speed;
   private int damage;
+  private int bulletDist;
   
-  public Projectile(PVector p, Balloon t, float s, int d){
+  public Projectile(PVector p, Balloon t, int s, int d, int bd){
     pos = p;
     target = t;
     speed = s;
     damage = d;
+    bulletDist = bd;
+  }
+  
+  public int getSpeed(){
+    return speed;
   }
   
   public boolean update(){
-    if(target == null) return false;
+    if(target == null || target.getHP() <= 0) return true;
     
-    float x = target.getPos().x - pos.x;
-    if(x > speed) x = speed;
-    else if(x < -speed) x = -speed;
-    float y = target.getPos().y - pos.y;
-    if(y > speed) y = speed;
-    else if(y < -speed) y = -speed;
+    int moveDist = bulletDist;
     
-    PVector dir = new PVector(x,y);
+    PVector toTarget = PVector.sub(target.getPos(), pos);
+    float distance = toTarget.mag();
     
-    if(dir.mag() < speed){
-      target.setHP(target.getHP() - damage);
+    PVector dir = PVector.mult(toTarget.normalize(), moveDist);
+    
+    if(distance < target.getSize()/2){
+      target.pop(damage);
       return true;
     } else{
       pos.add(dir);
