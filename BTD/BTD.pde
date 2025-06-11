@@ -1,5 +1,5 @@
 int gameScreen = 0;
-int cash = 2000;
+int cash = 500;
 int lives = 100;
 int round = 0;
 int balloonsPopped = 0;
@@ -23,6 +23,8 @@ int waveTimer = timeBetweenWave;
 int spawnIdx = 0, spawnInterval = 30;
 boolean waveInProgress = false;
 boolean win = false;
+
+int brokeMsgTimer = 0;
 
 ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
 
@@ -120,6 +122,14 @@ void draw() {
     if(round >= waves.size() && game.balloonDead()){
       gameScreen = 2;
       win = true;
+    }
+    
+    if (brokeMsgTimer > 0) {
+      fill(255, 0, 0, map(brokeMsgTimer, 0, 120, 0, 255));  // fades out
+      textAlign(CENTER);
+      textFont(createFont("NotoSerifMyanmar-Medium", 24));
+      text("ur broke noob, maybe try gambling", width / 2, height - 50);
+      brokeMsgTimer--;
     }
     
   } else if(gameScreen == 2){
@@ -309,7 +319,36 @@ void gameScreen(){
   fill(255);
   triangle((width - 140) - 27, (height - 35) - 23.5, (width - 140) - 27, (height - 35) + 23.5, (width - 140) + 27, (height - 35));
   
-  drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 200);
+  // gambling buttons (money $ lives gamble)
+  rectMode(CENTER);
+  textAlign(CENTER, CENTER);
+  if(overBtn(width - 210, 400, 100, 40)){
+    fill(100);
+  } else{
+    fill(200);
+  }
+  rect(width - 210, 400, 100, 40, 6);
+  fill(0);
+  textFont(createFont("NotoSerifMyanmar-Medium", 18));
+  text("lives: " + lives, width - 210, 400);
+  fill(215, 236, 252);
+  textSize(12);
+  text("gamble lives", width - 210, 430);
+  
+  if(overBtn(width - 70, 400, 100, 40)){
+    fill(100);
+  } else{
+    fill(200);
+  }
+  rect(width - 70, 400, 100, 40, 6);
+  fill(0);
+  textFont(createFont("NotoSerifMyanmar-Medium", 18));
+  text("cash: " + cash, width - 70, 400);
+  fill(215, 236, 252);
+  textSize(12);
+  text("gamble $$", width - 70, 430);
+  
+  drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 250);
   drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 400);
   drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 1000);
   //drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
@@ -379,7 +418,6 @@ void drawMonkeyUI(){
     text("Attack CD: " + selectedMonkey.getCooldown(), width - 150, height - 175);
     
     // sell button (50% refund)
-    int sellValue = selectedMonkey.getPrice()/2;
     if(overBtn(width - 230, height - 100, 80, 30)){
       fill(200, 50, 50);
     } else{
@@ -390,32 +428,32 @@ void drawMonkeyUI(){
     fill(255);
     textAlign(CENTER, CENTER);
     textFont(createFont("NotoSerifMyanmar-Medium", 14));
-    text("Sell ($" + sellValue + ")", width - 230, height - 100);
+    text("Sell ($" + selectedMonkey.getValue() / 2 + ")", width - 230, height - 100);
     
     // Upgrade buttons
-    if(overBtn(width - 100, height - 135, 110, 30)){
+    if(overBtn(width - 100, height - 135, 150, 30)){
       fill(50, 200, 50);
     } else{
       fill(80, 255, 80);
     }
     rectMode(CENTER);
-    rect(width - 100, height - 135, 110, 30, 5);
+    rect(width - 100, height - 135, 150, 30, 5);
     fill(255);
     textAlign(CENTER, CENTER);
     textFont(createFont("NotoSerifMyanmar-Medium", 14));
-    text("Upgrade ($" + selectedMonkey.getPrice() + ")", width - 100, height - 135);
+    text("+ damage ($" + selectedMonkey.getUpg1() + ")", width - 100, height - 135);
     
-    if(overBtn(width - 100, height - 100, 110, 30)){
+    if(overBtn(width - 100, height - 100, 150, 30)){
       fill(50, 200, 50);
     } else{
       fill(80, 255, 80);
     }
     rectMode(CENTER);
-    rect(width - 100, height - 100, 110, 30, 5);
+    rect(width - 100, height - 100, 150, 30, 5);
     fill(255);
     textAlign(CENTER, CENTER);
     textFont(createFont("NotoSerifMyanmar-Medium", 14));
-    text("Upgrade ($" + selectedMonkey.getPrice() + ")", width - 100, height - 100);
+    text("+ range & cd ($" + selectedMonkey.getUpg2() + ")", width - 100, height - 100);
 
   }
 }
@@ -479,11 +517,45 @@ void mouseClicked(){
     }
     
   } else if(gameScreen == 1){
-    
+    //gamble
+    if(overBtn(width - 210, 400, 100, 40) && lives > 20){
+      float r = random(2);
+      if(r >= 1) lives+=5;
+      else lives-=10;
+    }
+    if(overBtn(width - 70, 400, 100, 40) && cash > 100){
+      float r = random(2);
+      if(r >= 1) cash+=50;
+      else cash-=100;
+    }
+    //sell
     if(overBtn(width - 230, height - 100, 80, 30) && selectedMonkey != null){
       addCash(selectedMonkey.getPrice() / 2);
       game.getMonkeys().remove(selectedMonkey);
       selectedMonkey = null;
+      return;
+    }
+    //upgrade1
+    if(overBtn(width - 100, height - 135, 150, 30) && selectedMonkey != null){
+      if(useCash(selectedMonkey.getUpg1())){
+        selectedMonkey.addValue(selectedMonkey.getUpg1());
+        selectedMonkey.setDamage(2 * selectedMonkey.getDamage());
+        selectedMonkey.setUpg1(floor(2.5 * selectedMonkey.getUpg1()));
+      } else{
+        brokeMsgTimer = 120;
+      }
+      return;
+    }
+    //upgrade2
+    if(overBtn(width - 100, height - 100, 150, 30) && selectedMonkey != null){
+      if(useCash(selectedMonkey.getUpg2())){
+        selectedMonkey.addValue(selectedMonkey.getUpg2());
+        selectedMonkey.setRange(floor(1.5 * selectedMonkey.getRange()));
+        selectedMonkey.setCD(floor(0.67 * selectedMonkey.getCooldown()));
+        selectedMonkey.setUpg2(floor(2.5 * selectedMonkey.getUpg2()));
+      } else{
+        brokeMsgTimer = 120;
+      }
       return;
     }
     
@@ -510,17 +582,17 @@ void mouseClicked(){
     if(overBtn(width - 206, 120, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 0;
-      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
+      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 5, 60, monkeys[0]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 74, 120, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 50, 2, 40, 90, monkeys[1]);
+      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 90, monkeys[1]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 2;
-      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 400, 1000, 60, 1, 20, 10, monkeys[2]);
+      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1000, 1200, 800, 60, 1, 20, 15, monkeys[2]);
       game.addMonkey(tempMonkey);
     //} else if(overBtn(width - 74, 252, 120, 120)){
     //  monkeyIdx = 3;
@@ -539,6 +611,7 @@ void mouseClicked(){
           monkeyIdx = -1;
         }
       } else{
+        brokeMsgTimer = 120;
         tempMonkey = null;
         monkeyIdx = -1;
         game.getMonkeys().remove(game.getMonkeys().size()-1);
