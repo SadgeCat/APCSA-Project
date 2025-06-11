@@ -125,6 +125,14 @@ class GameController{
     p.display();
     for(Balloon b : balloons) b.display();
     for(Monkey m : monkeys){
+      if(selectedMonkey == m){
+        pushStyle();
+        noFill();
+        stroke(255, 255, 0);
+        strokeWeight(2);
+        ellipse(m.getPos().x, m.getPos().y, m.getSize() + 10, m.getSize() + 10);
+        popStyle();
+      }
       if (!m.getPlaced()){
         if (m.getRange() == 2000){
           m.setPos(new PVector(mouseX,mouseY));
