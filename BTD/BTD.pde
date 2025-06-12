@@ -1,5 +1,5 @@
 int gameScreen = 0;
-int cash = 10000;
+int cash = 500;
 int lives = 100;
 int round = 0;
 int balloonsPopped = 0;
@@ -258,7 +258,7 @@ void initScreen(){
   float kbX = 100;
   float kbY = 350;
   float kbW = 280;
-  float kbH = 230;
+  float kbH = 260;
   rect(kbX, kbY, kbW, kbH, 12);
   fill(255);
   textFont(createFont("NotoSerifMyanmar-Bold", 22));
@@ -270,7 +270,8 @@ void initScreen(){
   String[] keys = {
     "1: Dart Monkey",
     "2: Sniper Monkey",
-    "3: Super Monkey",
+    "3: Wizard Monkey",
+    "4: Super Monkey",
     "Q: Upgrade 1 (more damage)",
     "E: Upgrade 2 (better range & cd)",
     "X: Sell Monkey"
