@@ -135,7 +135,7 @@ void draw() {
       moneyMsgTimer--;
     }
     if(brokeMsgTimer > 0){
-      fill(255, 0, 0, map(brokeMsgTimer, 0, 120, 0, 255));
+      fill(179, 12, 0, map(brokeMsgTimer, 0, 120, 0, 255));
       textAlign(CENTER);
       textFont(createFont("NotoSerifMyanmar-Medium", 24));
       text("ur broke noob, maybe try gambling", width / 2, height - 50);
@@ -542,7 +542,7 @@ boolean isGameOver(){
 }
 
 void sell(){
-  addCash(selectedMonkey.getPrice() / 2);
+  addCash(selectedMonkey.getValue() / 2);
   game.getMonkeys().remove(selectedMonkey);
   selectedMonkey = null;
 }
@@ -552,7 +552,7 @@ void upgrade1(){
     selectedMonkey.setDamage(2 * selectedMonkey.getDamage());
     selectedMonkey.setUpg1(floor(2.5 * selectedMonkey.getUpg1()));
   } else{
-    brokeMsgTimer = 120;
+    brokeMsgTimer = 240;
   }
 }
 void upgrade2(){
@@ -562,7 +562,7 @@ void upgrade2(){
     selectedMonkey.setCD(floor(0.67 * selectedMonkey.getCooldown()));
     selectedMonkey.setUpg2(floor(2.5 * selectedMonkey.getUpg2()));
   } else{
-    brokeMsgTimer = 120;
+    brokeMsgTimer = 240;
   }
 }
 
@@ -680,7 +680,7 @@ void mouseClicked(){
           monkeyIdx = -1;
         }
       } else{
-        brokeMsgTimer = 120;
+        brokeMsgTimer = 240;
         tempMonkey = null;
         monkeyIdx = -1;
         game.getMonkeys().remove(game.getMonkeys().size()-1);
