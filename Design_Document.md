@@ -20,7 +20,7 @@ A completely original tower defense game where players must defend against waves
 
 ---
 
-![BTD UML Diagram](BTD_UML_Diagram)
+![BTD UML Diagram](BTD_UML_Diagram.png)
 
 ---
 
