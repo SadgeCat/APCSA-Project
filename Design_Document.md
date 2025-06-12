@@ -20,10 +20,6 @@ A completely original tower defense game where players must defend against waves
 
 ---
 
-![BTD UML Diagram](BTD_UML_Diagram.png)
-
----
-
 ## Classes:
 - Balloon (hp (color), speed), including its position and next waypoint  
 - Monkey (cost, damage, cd, attack range), shoots a projectile when balloon is in range  
@@ -32,6 +28,10 @@ A completely original tower defense game where players must defend against waves
 - Map (arraylist of paths containing different waypoints)  
 - Game Controller (makes path, spawns balloons, update position of balloons and projectiles)  
 - BTD (main game: #cash and #lives)  
+
+---
+
+![BTD UML Diagram](BTD_UML_Diagram.png)
 
 ---
 
