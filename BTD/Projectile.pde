@@ -40,7 +40,6 @@ class Projectile{
   
   public void display(){
     PVector toTarget = PVector.sub(target.getPos(), pos);
-  
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(atan2(toTarget.y, toTarget.x));

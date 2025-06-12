@@ -132,9 +132,9 @@ public class Monkey{
     }
     rotateMonkey(target.getPos());
     Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, null);
-    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "dart");
+    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x+25*cos(angle-PI/3),pos.y+25*sin(angle-PI/3)),target,1,damage,bulletDist, "dart");
     else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "bullet");
-    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "laser");
+    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x+35*cos(angle-PI/3),pos.y+35*sin(angle-PI/3)),target,1,damage,bulletDist, "laser");
     game.getProjectiles().add(proj);
     target = null;
   }
@@ -143,7 +143,11 @@ public class Monkey{
     pushMatrix();
     translate(pos.x,pos.y);
     rotate(angle);
-    image(img, 0, 0, size, size);
+    if (name.equals("Sniper Monkey")){
+      image(img,0,0,size,size*1.5);
+    } else {
+      image(img, 0, 0, size, size);
+    }
     popMatrix();
   }
   

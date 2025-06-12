@@ -1,5 +1,5 @@
 int gameScreen = 0;
-int cash = 500;
+int cash = 1000;
 int lives = 100;
 int round = 0;
 int balloonsPopped = 0;
@@ -468,7 +468,12 @@ void drawMonkeyBtn(PImage icon, int x, int y, int width, int height, int cost){
   rect(x, y, width, height, 10);
   
   imageMode(CENTER);
-  image(icon, x, y - 10, width * 0.8, height * 0.8);
+  if (cost == 400){
+    image(icon, x, y - 30, width * 0.8, height * 1.2);
+  } else {
+    image(icon, x, y - 10, width * 0.8, height * 0.8);
+  }
+  
 
   fill(0);
   textAlign(CENTER, CENTER);
