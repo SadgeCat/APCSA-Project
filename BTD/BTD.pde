@@ -4,10 +4,10 @@ int lives = 100;
 int round = 0;
 int balloonsPopped = 0;
 PImage startImage;
-PImage[] balloons = new PImage[8];
 String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
-PImage[] monkeys = new PImage[8];
-String[] mOrder = {"Dart_Monkey.png", "Sniper_Monkey.png", "Super_Monkey.png"};
+PImage[] balloons = new PImage[bOrder.length];
+String[] mOrder = {"Dart_Monkey.png", "Sniper_Monkey.png", "Wizard_Monkey.png", "Super_Monkey.png"};
+PImage[] monkeys = new PImage[mOrder.length];
 
 GameController game = new GameController();
 
@@ -36,10 +36,10 @@ int[] moveDistList = {4, 4, 4, 3, 2, 3};
 void setup(){
   size(1280,720);
   startImage = loadImage("Screen/StartScreenBTD.png");
-  for(int i = 0; i < 8; i++){
+  for(int i = 0; i < bOrder.length; i++){
     balloons[i] = loadImage("Balloons/" + bOrder[i]);
   }
-  for(int i = 0; i < 3; i++){
+  for(int i = 0; i < mOrder.length; i++){
     monkeys[i] = loadImage("Monkeys/" + mOrder[i]);
   }
   
@@ -388,8 +388,8 @@ void gameScreen(){
   
   drawMonkeyBtn(monkeys[0], width - 206, 120, 120, 120, 250);
   drawMonkeyBtn(monkeys[1], width - 74, 120, 120, 120, 400);
-  drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 1000);
-  //drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 200);
+  drawMonkeyBtn(monkeys[2], width - 206, 252, 120, 120, 850);
+  drawMonkeyBtn(monkeys[3], width - 74, 252, 120, 120, 1100);
   
   drawMonkeyUI();
 }
@@ -635,21 +635,23 @@ void mouseClicked(){
     if(overBtn(width - 206, 120, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 0;
-      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 5, 60, monkeys[0]);
+      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 10, 60, 1, monkeys[0]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 74, 120, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, monkeys[1]);
+      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, 1, monkeys[1]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 2;
-      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1000, 1200, 800, 60, 1, 20, 15, monkeys[2]);
+      tempMonkey = new Monkey("Wizard Monkey", new PVector(mouseX, mouseY), 150, 850, 1150, 1000, 50, 1, 7, 120, 4, monkeys[2]);
       game.addMonkey(tempMonkey);
-    //} else if(overBtn(width - 74, 252, 120, 120)){
-    //  monkeyIdx = 3;
-    //  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 200, 50, 1, 5, 60, monkeys[0]);
+    } else if(overBtn(width - 74, 252, 120, 120)){
+      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+      monkeyIdx = 3;
+      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1100, 1200, 900, 60, 1, 20, 15, 1, monkeys[3]);
+      game.addMonkey(tempMonkey);
     } else if (monkeyIdx != -1) {
       tempMonkey.setPos(new PVector(mouseX, mouseY));
       if(useCash(tempMonkey.getPrice())) {
@@ -730,19 +732,25 @@ void keyPressed(){
     if(key == '1'){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 0;
-      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 5, 60, monkeys[0]);
+      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 10, 60, 4, monkeys[0]);
       game.addMonkey(tempMonkey);
     }
     if(key == '2'){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 90, monkeys[1]);
+      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, 1, monkeys[1]);
       game.addMonkey(tempMonkey);
     }
     if(key == '3'){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 2;
-      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1000, 1200, 800, 60, 1, 20, 15, monkeys[2]);
+      tempMonkey = new Monkey("Wizard Monkey", new PVector(mouseX, mouseY), 150, 850, 1150, 1000, 50, 1, 7, 120, 4, monkeys[2]);
+      game.addMonkey(tempMonkey);
+    }
+    if(key == '4'){
+      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+      monkeyIdx = 2;
+      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1100, 1200, 900, 60, 1, 20, 15, 1, monkeys[3]);
       game.addMonkey(tempMonkey);
     }
   }

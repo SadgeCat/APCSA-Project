@@ -7,12 +7,12 @@ public class Monkey{
   private Balloon target;
   private int bulletDist;
   private int cooldown;
-  private int[] level;
+  private int chain;
   private float angle;
   private int upg1, upg2;
   private int value;
   
-  public Monkey(String monkeyType, PVector position, int r, int cost, int u1, int u2, int siz, int d, int bd, int cd, PImage i){
+  public Monkey(String monkeyType, PVector position, int r, int cost, int u1, int u2, int siz, int d, int bd, int cd, int ch, PImage i){
     name = monkeyType;
     pos = position;
     range = r;
@@ -24,7 +24,7 @@ public class Monkey{
     damage = d;
     bulletDist = bd;
     cooldown = cd;
-    level = new int[2];
+    chain = ch;
     size = siz;
     target = null;
     img = i;
@@ -131,10 +131,11 @@ public class Monkey{
       return;
     }
     rotateMonkey(target.getPos());
-    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, null);
-    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x+25*cos(angle-PI/3),pos.y+25*sin(angle-PI/3)),target,1,damage,bulletDist, "dart");
-    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, "bullet");
-    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x+35*cos(angle-PI/3),pos.y+35*sin(angle-PI/3)),target,1,damage,bulletDist, "laser");
+    Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, 1, null);
+    if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x+25*cos(angle-PI/3),pos.y+25*sin(angle-PI/3)),target,1,damage,bulletDist, chain, "dart");
+    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, chain, "bullet");
+    else if(name.equals("Wizard Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, chain, "wizard");
+    else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x+35*cos(angle-PI/3),pos.y+35*sin(angle-PI/3)),target,1,damage,bulletDist, chain, "laser");
     game.getProjectiles().add(proj);
     target = null;
   }
