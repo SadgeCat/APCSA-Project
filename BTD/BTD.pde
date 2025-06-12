@@ -566,6 +566,31 @@ void upgrade2(){
   }
 }
 
+void dartMonkey(){
+  if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+  monkeyIdx = 0;
+  tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 10, 60, 1, monkeys[0]);
+  game.addMonkey(tempMonkey);
+}
+void sniperMonkey(){
+  if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+  monkeyIdx = 1;
+  tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 300, 50, 2, 40, 150, 1, monkeys[1]);
+  game.addMonkey(tempMonkey);
+}
+void wizardMonkey(){
+  if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+  monkeyIdx = 2;
+  tempMonkey = new Monkey("Wizard Monkey", new PVector(mouseX, mouseY), 150, 850, 1150, 1000, 50, 1, 7, 120, 4, monkeys[2]);
+  game.addMonkey(tempMonkey);
+}
+void superMonkey(){
+  if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
+  monkeyIdx = 3;
+  tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1100, 1200, 900, 60, 1, 20, 15, 1, monkeys[3]);
+  game.addMonkey(tempMonkey);
+}
+
 void mouseClicked(){
   if(gameScreen == 0){
     if(overBtn(width/2, 400, 200, 75)){
@@ -634,25 +659,13 @@ void mouseClicked(){
     }
     
     if(overBtn(width - 206, 120, 120, 120)){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 0;
-      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 10, 60, 1, monkeys[0]);
-      game.addMonkey(tempMonkey);
+      dartMonkey();
     } else if(overBtn(width - 74, 120, 120, 120)){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, 1, monkeys[1]);
-      game.addMonkey(tempMonkey);
+      sniperMonkey();
     } else if(overBtn(width - 206, 252, 120, 120)){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 2;
-      tempMonkey = new Monkey("Wizard Monkey", new PVector(mouseX, mouseY), 150, 850, 1150, 1000, 50, 1, 7, 120, 4, monkeys[2]);
-      game.addMonkey(tempMonkey);
+      wizardMonkey();
     } else if(overBtn(width - 74, 252, 120, 120)){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 3;
-      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1100, 1200, 900, 60, 1, 20, 15, 1, monkeys[3]);
-      game.addMonkey(tempMonkey);
+      superMonkey();
     } else if (monkeyIdx != -1) {
       tempMonkey.setPos(new PVector(mouseX, mouseY));
       if(useCash(tempMonkey.getPrice())) {
@@ -686,6 +699,7 @@ void mouseClicked(){
       selectedMonkey = null;
       
       game.getMonkeys().clear();
+      game.getBalloons().clear();
       PVector start = game.getPath().get(0);
       createWaves(start);
     }
@@ -731,28 +745,16 @@ void keyPressed(){
     }
     
     if(key == '1'){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 0;
-      tempMonkey = new Monkey("Dart Monkey", new PVector(mouseX, mouseY), 100, 250, 350, 300, 50, 1, 10, 60, 4, monkeys[0]);
-      game.addMonkey(tempMonkey);
+      dartMonkey();
     }
     if(key == '2'){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, 1, monkeys[1]);
-      game.addMonkey(tempMonkey);
+      sniperMonkey();
     }
     if(key == '3'){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 2;
-      tempMonkey = new Monkey("Wizard Monkey", new PVector(mouseX, mouseY), 150, 850, 1150, 1000, 50, 1, 7, 120, 4, monkeys[2]);
-      game.addMonkey(tempMonkey);
+      wizardMonkey();
     }
     if(key == '4'){
-      if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
-      monkeyIdx = 2;
-      tempMonkey = new Monkey("Super Monkey", new PVector(mouseX, mouseY), 200, 1100, 1200, 900, 60, 1, 20, 15, 1, monkeys[3]);
-      game.addMonkey(tempMonkey);
+      superMonkey();
     }
   }
 }
