@@ -131,6 +131,8 @@ class GameController{
         stroke(255, 255, 0);
         strokeWeight(2);
         ellipse(m.getPos().x, m.getPos().y, m.getSize() + 10, m.getSize() + 10);
+        fill(100, 100, 100, 100);
+        circle(m.getPos().x, m.getPos().y,2*m.getRange());
         popStyle();
       }
       if (!m.getPlaced()){

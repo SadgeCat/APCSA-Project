@@ -9,13 +9,18 @@ public class Monkey{
   private int cooldown;
   private int[] level;
   private float angle;
+  private int upg1, upg2;
+  private int value;
   
-  public Monkey(String monkeyType, PVector position, int r, int cost,int siz, int d, int bd, int cd, PImage i){
+  public Monkey(String monkeyType, PVector position, int r, int cost, int u1, int u2, int siz, int d, int bd, int cd, PImage i){
     name = monkeyType;
-    pos = new PVector(mouseX,mouseY);
+    pos = position;
     range = r;
     isPlaced = false;
     price = cost;
+    value = cost;
+    upg1 = u1;
+    upg2 = u2;
     damage = d;
     bulletDist = bd;
     cooldown = cd;
@@ -45,6 +50,14 @@ public class Monkey{
     return price;
   }
   
+  public int getUpg1(){
+    return upg1;
+  }
+  
+  public int getUpg2(){
+    return upg2;
+  }
+  
   public int getDamage(){
     return damage;
   }
@@ -57,8 +70,36 @@ public class Monkey{
     return pos;
   }
   
+  public int getValue(){
+    return value;
+  }
+  
   public Balloon getTarget(){
     return target;
+  }
+  
+  public void setDamage(int k){
+    damage = k;
+  }
+  
+  public void setRange(int k){
+    range = k;
+  }
+  
+  public void setCD(int k){
+    cooldown = k;
+  }
+  
+  public void setUpg1(int k){
+    upg1 = k;
+  }
+  
+  public void setUpg2(int k){
+    upg2 = k;
+  }
+  
+  public void addValue(int k){
+    value += k;
   }
   
   public void setPos(PVector p){
