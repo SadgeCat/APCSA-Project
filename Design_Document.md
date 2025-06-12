@@ -31,6 +31,10 @@ A completely original tower defense game where players must defend against waves
 
 ---
 
+![BTD UML Diagram](BTD_UML_Diagram.png)
+
+---
+
 ## How to play:
 Defend your base from waves of balloons by placing monkeys that will pop them. Each popped balloon earns you cash, which can be used to place more monkeys. Survive all the waves before too many balloons reach your base.  
 
