@@ -133,8 +133,8 @@ public class Monkey{
     rotateMonkey(target.getPos());
     Projectile proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, 1, null);
     if(name.equals("Dart Monkey")) proj = new Projectile(new PVector(pos.x+25*cos(angle-PI/3),pos.y+25*sin(angle-PI/3)),target,1,damage,bulletDist, chain, "dart");
-    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, chain, "bullet");
-    else if(name.equals("Wizard Monkey")) proj = new Projectile(new PVector(pos.x,pos.y),target,1,damage,bulletDist, chain, "wizard");
+    else if(name.equals("Sniper Monkey")) proj = new Projectile(new PVector(pos.x+60*cos(angle-1.1*PI/2),pos.y+60*sin(angle-1.1*PI/2)),target,1,damage,bulletDist, chain, "bullet");
+    else if(name.equals("Wizard Monkey")) proj = new Projectile(new PVector(pos.x+25*cos(angle-PI/2),pos.y+25*sin(angle-PI/2)),target,1,damage,bulletDist, chain, "wizard");
     else if(name.equals("Super Monkey")) proj = new Projectile(new PVector(pos.x+35*cos(angle-PI/3),pos.y+35*sin(angle-PI/3)),target,1,damage,bulletDist, chain, "laser");
     game.getProjectiles().add(proj);
     target = null;
