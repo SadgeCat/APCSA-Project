@@ -21,7 +21,7 @@ class Path{
   }
   
   public void display(){
-    stroke(150);
+    stroke(36, 61, 43);
     strokeWeight(40);
     noFill();
     beginShape();
