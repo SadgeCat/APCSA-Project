@@ -542,7 +542,7 @@ boolean isGameOver(){
 }
 
 void sell(){
-  addCash(selectedMonkey.getPrice() / 2);
+  addCash(selectedMonkey.getValue() / 2);
   game.getMonkeys().remove(selectedMonkey);
   selectedMonkey = null;
 }
