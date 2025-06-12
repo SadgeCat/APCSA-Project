@@ -145,7 +145,7 @@ class GameController{
         if (m.getRange() == 2000){
           m.setPos(new PVector(mouseX,mouseY));
         } else {
-          fill(100, 100, 100, 100);
+          fill(100, 100, 100, 200);
           boolean onOtherMonkey = false;
           for(int i = 0; i < monkeys.size()-1; i++){
             float distance = dist(m.getPos().x, m.getPos().y, monkeys.get(i).getPos().x, monkeys.get(i).getPos().y);
