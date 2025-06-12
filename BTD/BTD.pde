@@ -4,7 +4,7 @@ int lives = 100;
 int round = 0;
 int balloonsPopped = 0;
 PImage startImage;
-String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Black.png", "Lead.png"};
+String[] bOrder = {"Red.png", "Blue.png", "Green.png", "Yellow.png", "Pink.png", "White.png", "Rainbow.png", "Ceramic.png"};
 PImage[] balloons = new PImage[bOrder.length];
 String[] mOrder = {"Dart_Monkey.png", "Sniper_Monkey.png", "Wizard_Monkey.png", "Super_Monkey.png"};
 PImage[] monkeys = new PImage[mOrder.length];
@@ -29,9 +29,9 @@ int brokeMsgTimer = 0;
 
 ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
 
-int[] speedList = {5, 4, 3, 2, 1, 1};
-int[] sizeList = {40, 40, 40, 40, 40, 40}; // will change sizes later
-int[] moveDistList = {4, 4, 4, 3, 2, 3};
+int[] speedList = {5, 4, 3, 2, 1, 1, 1, 1};
+int[] sizeList = {40, 40, 40, 40, 40, 30, 40, 40};
+int[] moveDistList = {4, 4, 4, 3, 4, 3, 3, 3};
 
 void setup(){
   size(1280,720);
@@ -69,15 +69,17 @@ void draw() {
         balloon.remove(i);
         balloonsPopped++;
         
-      } else if(current.getHP() != current.getPrevHP()){
+      } else if(current.getHP() != current.getPrevHP() && current.getHP() <= 7){
         
-        int currentHP = current.getHP();
+        int currentHP = constrain(current.getHP(), 0, bOrder.length);
         addCash(10);
         
         if (currentHP > 0)
         {    
-          if (current.getPrevHP() == 6) {
-            Balloon b = new Balloon(5, speedList[4], current.getPos().copy(), sizeList[4], moveDistList[4], balloons[4]);
+          if (current.getPrevHP() >= 6) {
+            int prevHP = constrain(current.getPrevHP(), 0, bOrder.length);
+            
+            Balloon b = new Balloon(prevHP - 1, speedList[prevHP - 2], current.getPos().copy(), sizeList[prevHP - 2], moveDistList[prevHP - 2], balloons[prevHP - 2]);
             b.setDist(current.getDist());
             b.setPathIndex(current.getPathIndex());
             game.spawnBalloon(b);
@@ -154,7 +156,7 @@ ArrayList<Balloon> createWave(int[] cnt, int[] hp, PVector start){
   ArrayList<Balloon> wave = new ArrayList<Balloon>();
   for (int i = 0; i < cnt.length; i++) {
     for (int j = 0; j < cnt[i]; j++) {
-      Balloon b = new Balloon(hp[i], speedList[hp[i] - 1], start.copy(), sizeList[hp[i] - 1], moveDistList[hp[i] - 1], balloons[hp[i] - 1]);
+      Balloon b = new Balloon(hp[i], speedList[constrain(hp[i], 0, speedList.length) - 1], start.copy(), sizeList[constrain(hp[i], 0, sizeList.length) - 1], moveDistList[constrain(hp[i], 0, moveDistList.length) - 1], balloons[constrain(hp[i], 0, balloons.length) - 1]);
       wave.add(b);
     }
   }
@@ -163,7 +165,7 @@ ArrayList<Balloon> createWave(int[] cnt, int[] hp, PVector start){
 
 void createWaves(PVector start) {
   waves.clear();
-  // int[] cnt, int[] hp, int[] speed, int[] size, int[] cash, int[] moveDist, int[] type, PVector start
+  // int[] cnt, int[] hp, PVector start
   waves.add(createWave(new int[]{10}, new int[]{1}, start)); // 10 red
   waves.add(createWave(new int[]{5, 5}, new int[]{1, 2}, start)); // 5 red, 5 blue
   waves.add(createWave(new int[]{10}, new int[]{2}, start)); // 10 blue
@@ -171,7 +173,14 @@ void createWaves(PVector start) {
   waves.add(createWave(new int[]{15}, new int[]{4}, start)); // 15 yellow
   waves.add(createWave(new int[]{15}, new int[]{5}, start)); // 15 pink
   waves.add(createWave(new int[]{5,5,5}, new int[]{4,5,6}, start)); // 5y, 5p, 5w
-  waves.add(createWave(new int[]{20}, new int[]{6}, start)); // 20w
+  waves.add(createWave(new int[]{10}, new int[]{6}, start)); // 10w
+  waves.add(createWave(new int[]{10, 5, 5, 10}, new int[]{3, 5, 3, 5}, start)); // 15 pink 15 green but like assorted order
+  waves.add(createWave(new int[]{5, 5, 5, 5}, new int[]{3, 6, 5, 6}, start)); // 10w 5p 5g
+  waves.add(createWave(new int[]{5, 10, 5}, new int[]{5, 6, 7}, start)); // 5p 10w 5r
+  waves.add(createWave(new int[]{5, 10}, new int[]{6, 7}, start)); // 5w 10r
+  waves.add(createWave(new int[]{10}, new int[]{10}, start)); // 10c
+  waves.add(createWave(new int[]{20, 1}, new int[]{7, 15}, start)); // 20r 1 strong ceramic
+  waves.add(createWave(new int[]{3}, new int[]{33}, start)); // 3 super strong ceramic, goodluck!!!!!
 }
 
 void initScreen(){
