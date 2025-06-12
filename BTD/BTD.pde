@@ -24,6 +24,7 @@ int spawnIdx = 0, spawnInterval = 30;
 boolean waveInProgress = false;
 boolean win = false;
 
+int moneyMsgTimer = 0;
 int brokeMsgTimer = 0;
 
 ArrayList<ArrayList<Balloon>> waves = new ArrayList<ArrayList<Balloon>>();
@@ -112,6 +113,8 @@ void draw() {
     if(spawnIdx >= waves.get(round).size() && game.balloonDead() && waveInProgress == true){
       waveTimer = timeBetweenWave;
       round++;
+      moneyMsgTimer = 300;
+      addCash(round * 50);
       waveInProgress = false;
     }
     
@@ -124,8 +127,15 @@ void draw() {
       win = true;
     }
     
-    if (brokeMsgTimer > 0) {
-      fill(255, 0, 0, map(brokeMsgTimer, 0, 120, 0, 255));  // fades out
+    if(moneyMsgTimer > 0){
+      fill(0, 255, 0, map(moneyMsgTimer, 0, 120, 0, 255));
+      textAlign(CENTER);
+      textFont(createFont("NotoSerifMyanmar-Medium", 24));
+      text("wave bonus: $" + round * 50, width / 2, height - 50);
+      moneyMsgTimer--;
+    }
+    if(brokeMsgTimer > 0){
+      fill(255, 0, 0, map(brokeMsgTimer, 0, 120, 0, 255));
       textAlign(CENTER);
       textFont(createFont("NotoSerifMyanmar-Medium", 24));
       text("ur broke noob, maybe try gambling", width / 2, height - 50);
@@ -250,7 +260,7 @@ void mapSelectScreen(){
   textFont(createFont("NotoSerifMyanmar-Bold", 36));
   text("Select a Map", width/2, 80);
   
-  for(int i = 0; i < 5; i++){
+  for(int i = 0; i < 6; i++){
     int btnX = 150 + i * 200;
     int btnY = height / 2;
     int btnW = 120;
@@ -283,7 +293,7 @@ void mapSelectScreen(){
 }
 
 void gameScreen(){
-  background(50, 50, 50);
+  background(45, 133, 68);
   game.display();
   
   // wave, cash, lives info at top
@@ -638,7 +648,7 @@ void mouseClicked(){
     }
     
   } else if(gameScreen == 3){
-    for(int i = 0; i < 5; i++){
+    for(int i = 0; i < 6; i++){
       int btnX = 150 + i * 200;
       int btnY = height / 2;
       int btnW = 120;

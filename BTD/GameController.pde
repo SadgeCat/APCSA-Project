@@ -63,6 +63,12 @@ class GameController{
   }
   
   public boolean placeMonkey(Monkey m){
+    for(int i = 0; i < monkeys.size()-1; i++){
+      float distance = dist(m.getPos().x, m.getPos().y, monkeys.get(i).getPos().x, monkeys.get(i).getPos().y);
+      if(distance < (m.getSize() / 2.0 + monkeys.get(i).getSize() / 2.0)){
+        return false;
+      }
+    }
     if(!isOnPath(m.getPos(), m.getSize(), 20)){
       m.setPlaced();
       return true;
@@ -140,7 +146,14 @@ class GameController{
           m.setPos(new PVector(mouseX,mouseY));
         } else {
           fill(100, 100, 100, 100);
-          if (isOnPath(m.getPos(), m.getSize(), 20)){
+          boolean onOtherMonkey = false;
+          for(int i = 0; i < monkeys.size()-1; i++){
+            float distance = dist(m.getPos().x, m.getPos().y, monkeys.get(i).getPos().x, monkeys.get(i).getPos().y);
+            if(distance < (m.getSize() / 2.0 + monkeys.get(i).getSize() / 2.0)){
+              onOtherMonkey = true;
+            }
+          }
+          if (isOnPath(m.getPos(), m.getSize(), 20) || onOtherMonkey){
             fill(255,10,10,100);
           }
           circle(mouseX,mouseY,2*m.getRange());

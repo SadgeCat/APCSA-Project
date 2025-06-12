@@ -47,12 +47,23 @@ class Map{
     ArrayList<PVector> a5 = new ArrayList<PVector>(Arrays.asList(
       new PVector(0, 300),
       new PVector(100, 300),
-      new PVector(100, 600),
+      new PVector(100, 450),
+      new PVector(700, 450),
+      new PVector(700, 100),
+      new PVector(300, 100),
       new PVector(300, 600),
-      new PVector(300, 200),
+      new PVector(1000, 600)
+    ));
+    ArrayList<PVector> a6 = new ArrayList<PVector>(Arrays.asList(
+      new PVector(0, 100),
+      new PVector(350, 100),
+      new PVector(350, 650),
+      new PVector(600, 650),
       new PVector(600, 200),
-      new PVector(600, 500),
-      new PVector(1000, 500)
+      new PVector(800, 200),
+      new PVector(800, 100),
+      new PVector(900, 100),
+      new PVector(900, 720)
     ));
     
     maps.add(new Path(a1));
@@ -60,6 +71,7 @@ class Map{
     maps.add(new Path(a3));
     maps.add(new Path(a4));
     maps.add(new Path(a5));
+    maps.add(new Path(a6));
   }
   
   public ArrayList<Path> getMaps(){
