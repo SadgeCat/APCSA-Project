@@ -641,7 +641,7 @@ void mouseClicked(){
     } else if(overBtn(width - 74, 120, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
       monkeyIdx = 1;
-      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 550, 50, 2, 40, 150, 1, monkeys[1]);
+      tempMonkey = new Monkey("Sniper Monkey", new PVector(mouseX, mouseY), 2000, 400, 450, 300, 50, 2, 40, 150, 1, monkeys[1]);
       game.addMonkey(tempMonkey);
     } else if(overBtn(width - 206, 252, 120, 120)){
       if(monkeyIdx != -1) game.getMonkeys().remove(game.getMonkeys().size()-1);
